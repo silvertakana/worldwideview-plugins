@@ -15,7 +15,7 @@ export class AirportsPlugin extends BaseFacilityPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            const res = await fetch("/data/airports.geojson");
+            const res = await fetch("https://cdn.jsdelivr.net/npm/@worldwideview/wwv-plugin-airports@latest/data/airports.geojson");
             if (!res.ok) throw new Error("Failed to load geojson");
             const parse = await res.json();
             

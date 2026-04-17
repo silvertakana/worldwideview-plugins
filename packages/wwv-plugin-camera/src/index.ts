@@ -7,7 +7,7 @@ import {
 import { CameraDetail } from "./CameraDetail";
 import { CameraSettings as CameraSettingsComponent } from "./CameraSettings";
 import { mapRawCamera, mapGeoJsonFeature } from "./cameraMapper";
-import { trackEvent } from "@/lib/analytics";
+
 
 type CameraSettings = {
     sourceType: "default" | "traffic" | "url" | "file";
@@ -81,7 +81,7 @@ export class CameraPlugin implements WorldPlugin {
             } else if (settings.sourceType === "file") {
                 this.loadFileSource(settings);
             }
-            trackEvent("camera-source-load", { sourceType: settings.sourceType });
+            
             return this.getAllEntities();
         } catch (error) {
             console.error("[CameraPlugin] Fetch error:", error);
@@ -165,3 +165,4 @@ export class CameraPlugin implements WorldPlugin {
         ];
     }
 }
+

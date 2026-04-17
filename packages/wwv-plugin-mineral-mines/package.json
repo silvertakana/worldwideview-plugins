@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-mineral-mines",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "WorldWideView plugin — Global mining sites and quarries from OpenStreetMap.",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
