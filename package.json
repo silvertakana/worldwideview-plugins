@@ -1,0 +1,17 @@
+{
+  "name": "worldwideview-plugins",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r --filter './packages/wwv-plugin-*' run build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vite": "^8.0.8",
+    "typescript": "^5",
+    "rollup-plugin-external-globals": "^0.13.0",
+    "vitest": "^4.0.18",
+    "@types/react": "^19"
+  }
+}
