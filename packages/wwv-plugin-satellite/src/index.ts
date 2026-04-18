@@ -60,6 +60,38 @@ export class SatellitePlugin implements WorldPlugin {
         this.context = null;
     }
 
+    private mapPayloadToEntities(data: any): GeoEntity[] {
+        const satelliteItems = Array.isArray(data) ? data : (data.satellites || data.items || []);
+        
+        // Handle single satellite updates from websocket streams
+        if (!Array.isArray(data) && data && data.noradId) {
+            satelliteItems.push(data);
+        }
+
+        return satelliteItems.map(
+            (sat: SatelliteResponse): GeoEntity => ({
+                id: `satellite-${sat.noradId}`,
+                pluginId: "satellite",
+                latitude: sat.latitude,
+                longitude: sat.longitude,
+                altitude: sat.altitude * 1000, // km → meters
+                heading: sat.heading,
+                speed: sat.speed,
+                timestamp: new Date(),
+                label: sat.name,
+                properties: {
+                    noradId: sat.noradId,
+                    name: sat.name,
+                    group: sat.group,
+                    country: sat.country,
+                    objectType: sat.objectType,
+                    altitudeKm: sat.altitude,
+                    period: sat.period,
+                },
+            }),
+        );
+    }
+
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
             const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
@@ -69,35 +101,16 @@ export class SatellitePlugin implements WorldPlugin {
             const res = await globalThis.fetch(`${engineBase}/data/satellite`);
             if (!res.ok) throw new Error(`Satellite API returned ${res.status}`);
             const data = await res.json();
-            const satelliteItems = data.satellites || data.items || [];
-            if (!satelliteItems || !Array.isArray(satelliteItems)) return [];
-
-            return satelliteItems.map(
-                (sat: SatelliteResponse): GeoEntity => ({
-                    id: `satellite-${sat.noradId}`,
-                    pluginId: "satellite",
-                    latitude: sat.latitude,
-                    longitude: sat.longitude,
-                    altitude: sat.altitude * 1000, // km → meters
-                    heading: sat.heading,
-                    speed: sat.speed,
-                    timestamp: new Date(),
-                    label: sat.name,
-                    properties: {
-                        noradId: sat.noradId,
-                        name: sat.name,
-                        group: sat.group,
-                        country: sat.country,
-                        objectType: sat.objectType,
-                        altitudeKm: sat.altitude,
-                        period: sat.period,
-                    },
-                }),
-            );
+            
+            return this.mapPayloadToEntities(data);
         } catch (err) {
             console.error("[SatellitePlugin] Fetch error:", err);
             return [];
         }
+    }
+
+    mapWebsocketPayload(payload: any): GeoEntity[] {
+        return this.mapPayloadToEntities(payload);
     }
 
     getPollingInterval(): number {

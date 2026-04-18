@@ -45,6 +45,44 @@ export class IranWarLivePlugin extends BaseIncidentPlugin {
         return typeToIcon(type);
     }
 
+    private mapPayloadToEntities(data: any): GeoEntity[] {
+        const items = Array.isArray(data) ? data : (data.items && Array.isArray(data.items) ? data.items : []);
+        
+        // Handle single item pushed via websocket
+        if (items.length === 0 && !Array.isArray(data)) {
+            if (data.event_id || data._osint_meta) {
+                items.push(data);
+            }
+        }
+
+        return items.map((item: any): GeoEntity => {
+            const lat = item._osint_meta?.coordinates?.lat || 0;
+            const lon = item._osint_meta?.coordinates?.lng || 0;
+            const eventTime = new Date(item.timestamp || Date.now());
+            const hoursAgo = Math.max(0, Math.round((Date.now() - eventTime.getTime()) / (1000 * 60 * 60)));
+            
+            return {
+                id: item.event_id,
+                pluginId: "iranwarlive",
+                latitude: lat,
+                longitude: lon,
+                timestamp: eventTime,
+                label: item.type + (item.location ? ` in ${item.location}` : ''),
+                properties: {
+                    hours_ago: hoursAgo,
+                    type: item.type,
+                    confidence: item.confidence,
+                    location: item.location,
+                    summary: item.event_summary,
+                    casualties: item._osint_meta?.casualties || 0,
+                    source_url: item.source_url,
+                    preview_image: item.preview_image,
+                    preview_video: item.preview_video
+                },
+            };
+        });
+    }
+
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
             const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
@@ -57,38 +95,15 @@ export class IranWarLivePlugin extends BaseIncidentPlugin {
             
             const data = await res.json();
             
-            if (!data.items || !Array.isArray(data.items)) return [];
-
-            return data.items.map((item: any): GeoEntity => {
-                const lat = item._osint_meta?.coordinates?.lat || 0;
-                const lon = item._osint_meta?.coordinates?.lng || 0;
-                const eventTime = new Date(item.timestamp);
-                const hoursAgo = Math.max(0, Math.round((Date.now() - eventTime.getTime()) / (1000 * 60 * 60)));
-                
-                return {
-                    id: item.event_id,
-                    pluginId: "iranwarlive",
-                    latitude: lat,
-                    longitude: lon,
-                    timestamp: eventTime,
-                    label: item.type + (item.location ? ` in ${item.location}` : ''),
-                    properties: {
-                        hours_ago: hoursAgo,
-                        type: item.type,
-                        confidence: item.confidence,
-                        location: item.location,
-                        summary: item.event_summary,
-                        casualties: item._osint_meta?.casualties || 0,
-                        source_url: item.source_url,
-                        preview_image: item.preview_image,
-                        preview_video: item.preview_video
-                    },
-                };
-            });
+            return this.mapPayloadToEntities(data);
         } catch (err) {
             console.error("[IranWarLivePlugin] Fetch error from microservice backend:", err);
             return [];
         }
+    }
+
+    mapWebsocketPayload(payload: any): GeoEntity[] {
+        return this.mapPayloadToEntities(payload);
     }
 
     getServerConfig(): ServerPluginConfig {
