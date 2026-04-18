@@ -88,7 +88,7 @@ export class IranWarLivePlugin extends BaseIncidentPlugin {
             const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
             const engineBase = envUrl
                 ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
-                : 'http://localhost:5001';
+                : 'https://dataengine.worldwideview.dev';
             const res = await globalThis.fetch(`${engineBase}/data/iranwarlive`);
             
             if (!res.ok) throw new Error(`IranWarLive Backend returned ${res.status}`);

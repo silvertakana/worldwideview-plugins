@@ -47,7 +47,7 @@ export class ConflictEventsPlugin extends BaseIncidentPlugin {
     }
 
     async fetch(timeRange: TimeRange): Promise<GeoEntity[]> {
-        let engineBase = "http://localhost:5001";
+        let engineBase = 'https://dataengine.worldwideview.dev';
             
             if (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) {
                 const globalUrl = (globalThis as any).__WWV_ENGINE_URL__;

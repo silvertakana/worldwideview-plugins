@@ -97,7 +97,7 @@ export class SatellitePlugin implements WorldPlugin {
             const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
             const engineBase = envUrl
                 ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
-                : 'http://localhost:5001';
+                : 'https://dataengine.worldwideview.dev';
             const res = await globalThis.fetch(`${engineBase}/data/satellite`);
             if (!res.ok) throw new Error(`Satellite API returned ${res.status}`);
             const data = await res.json();

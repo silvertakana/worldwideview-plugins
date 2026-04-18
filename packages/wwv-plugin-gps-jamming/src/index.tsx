@@ -57,7 +57,7 @@ export class GpsJammingPlugin implements WorldPlugin {
         const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
         const engineBase = envUrl
             ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
-            : 'http://localhost:5001';
+            : 'https://dataengine.worldwideview.dev';
         const res = await fetch(`${engineBase}/data/gps_jamming`);
         const json = await res.json();
         const items = json.items || [];

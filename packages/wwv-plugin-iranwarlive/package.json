@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-iranwarlive",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Iran War Live — Live OSINT data sourced from IranWarLive.com",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
