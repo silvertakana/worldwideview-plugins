@@ -1,21 +1,21 @@
 {
-    "name":  "@worldwideview/wwv-plugin-earthquakes",
-    "version":  "1.1.1",
-    "main":  "dist/frontend.mjs",
-    "dependencies":  {
-                         "@worldwideview/wwv-plugin-sdk":  "^1.2.1",
-                         "@worldwideview/wwv-lib-incidents":  "workspace:*",
-                         "lucide-react":  "^0.368.0"
-                     },
-    "worldwideview":  {
-                          "id":  "earthquakes",
-                          "icon":  "Activity",
-                          "category":  "Natural Disasters",
-                          "format":  "bundle"
-                      },
-    "type":  "module",
-    "module":  "dist/frontend.mjs",
-    "scripts":  {
-                    "build":  "vite build"
-                }
+  "name": "@worldwideview/wwv-plugin-earthquakes",
+  "version": "1.1.7",
+  "main": "dist/frontend.mjs",
+  "dependencies": {
+    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
+    "@worldwideview/wwv-lib-incidents": "workspace:*",
+    "lucide-react": "^0.368.0"
+  },
+  "worldwideview": {
+    "id": "earthquakes",
+    "icon": "Activity",
+    "category": "Natural Disasters",
+    "format": "bundle"
+  },
+  "type": "module",
+  "module": "dist/frontend.mjs",
+  "scripts": {
+    "build": "vite build"
+  }
 }

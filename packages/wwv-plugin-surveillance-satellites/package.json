@@ -1,8 +1,23 @@
 {
-    "name":  "@worldwideview/wwv-plugin-surveillance-satellites",
-    "version":  "1.1.1",
-    "main":  "src/index.tsx",
-    "dependencies":  {
-                         "lucide-react":  "^0.364.0"
-                     }
+  "name": "@worldwideview/wwv-plugin-surveillance-satellites",
+  "version": "1.1.11",
+  "main": "dist/frontend.mjs",
+  "dependencies": {
+    "lucide-react": "^0.364.0"
+  },
+  "worldwideview": {
+    "id": "surveillance-satellites",
+    "format": "bundle",
+    "category": "Space",
+    "icon": "Rocket"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.8"
+  },
+  "module": "dist/frontend.mjs",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  }
 }

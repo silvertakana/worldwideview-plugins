@@ -139,6 +139,12 @@ const packageJson = {
   license: "ISC",
   author: "WorldWideView",
   peerDependencies: { "@worldwideview/wwv-plugin-sdk": "*" },
+  worldwideview: {
+    id: name,
+    format: "static",
+    category: category,
+    icon: icon
+  }
 };
 
 writeFileSync(join(PKG_DIR, "package.json"), JSON.stringify(packageJson, null, 2) + "\n");

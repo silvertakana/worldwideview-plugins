@@ -1,43 +1,43 @@
 {
-    "name":  "@worldwideview/wwv-plugin-volcanoes",
-    "version":  "1.0.2",
-    "description":  "WorldWideView plugin — Active and dormant volcanoes worldwide from OSM",
-    "main":  "dist/frontend.mjs",
-    "types":  "src/index.ts",
-    "files":  [
-                  "src",
-                  "data"
-              ],
-    "keywords":  [
-                     "worldwideview",
-                     "worldwideview-plugin",
-                     "wwv-plugin-volcanoes",
-                     "volcanoes"
-                 ],
-    "repository":  {
-                       "type":  "git",
-                       "url":  "https://github.com/silvertakana/worldwideview-plugins.git",
-                       "directory":  "packages/wwv-plugin-volcanoes"
-                   },
-    "homepage":  "https://github.com/silvertakana/worldwideview#readme",
-    "bugs":  {
-                 "url":  "https://github.com/silvertakana/worldwideview/issues"
-             },
-    "license":  "ISC",
-    "author":  "WorldWideView",
-    "peerDependencies":  {
-                             "@worldwideview/wwv-plugin-sdk":  "^1.2.1",
-                             "@worldwideview/wwv-lib-facilities":  "workspace:*"
-                         },
-    "worldwideview":  {
-                          "id":  "volcanoes",
-                          "icon":  "Mountain",
-                          "category":  "Natural Disaster",
-                          "format":  "static"
-                      },
-    "type":  "module",
-    "module":  "dist/frontend.mjs",
-    "scripts":  {
-                    "build":  "vite build"
-                }
+  "name": "@worldwideview/wwv-plugin-volcanoes",
+  "version": "1.0.8",
+  "description": "WorldWideView plugin — Active and dormant volcanoes worldwide from OSM",
+  "main": "dist/frontend.mjs",
+  "types": "src/index.ts",
+  "files": [
+    "src",
+    "data"
+  ],
+  "keywords": [
+    "worldwideview",
+    "worldwideview-plugin",
+    "wwv-plugin-volcanoes",
+    "volcanoes"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silvertakana/worldwideview-plugins.git",
+    "directory": "packages/wwv-plugin-volcanoes"
+  },
+  "homepage": "https://github.com/silvertakana/worldwideview#readme",
+  "bugs": {
+    "url": "https://github.com/silvertakana/worldwideview/issues"
+  },
+  "license": "ISC",
+  "author": "WorldWideView",
+  "peerDependencies": {
+    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
+    "@worldwideview/wwv-lib-facilities": "workspace:*"
+  },
+  "worldwideview": {
+    "id": "volcanoes",
+    "icon": "Mountain",
+    "category": "Natural Disaster",
+    "format": "static"
+  },
+  "type": "module",
+  "module": "dist/frontend.mjs",
+  "scripts": {
+    "build": "vite build"
+  }
 }

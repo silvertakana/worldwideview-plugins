@@ -1,19 +1,31 @@
 {
-    "name":  "@worldwideview/wwv-plugin-osm-search",
-    "version":  "1.2.3",
-    "description":  "OSM Search Plugin for WorldWideView",
-    "main":  "src/index.ts",
-    "type":  "module",
-    "dependencies":  {
-                         "@worldwideview/wwv-plugin-sdk":  "^1.2.1",
-                         "cesium":  "^1.139.0",
-                         "lucide-react":  "^0.576.0",
-                         "react":  "19.2.3",
-                         "resium":  "1.19.4",
-                         "zustand":  "^5.0.11"
-                     },
-    "devDependencies":  {
-                            "@types/react":  "^19.0.2",
-                            "typescript":  "^5.4.5"
-                        }
+  "name": "@worldwideview/wwv-plugin-osm-search",
+  "version": "1.2.14",
+  "description": "OSM Search Plugin for WorldWideView",
+  "main": "dist/frontend.mjs",
+  "type": "module",
+  "dependencies": {
+    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
+    "cesium": "^1.139.0",
+    "lucide-react": "^0.576.0",
+    "react": "19.2.5",
+    "resium": "1.19.4",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^5.4.5",
+    "vite": "^8.0.8"
+  },
+  "worldwideview": {
+    "id": "osm-search",
+    "format": "bundle",
+    "category": "Custom",
+    "icon": "Layer"
+  },
+  "module": "dist/frontend.mjs",
+  "scripts": {
+    "build": "vite build"
+  }
 }
