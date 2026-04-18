@@ -54,51 +54,67 @@ export class GpsJammingPlugin implements WorldPlugin {
     }
 
     async fetch(timeRange: TimeRange): Promise<GeoEntity[]> {
-        const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
-        const engineBase = envUrl
-            ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
-            : 'https://dataengine.worldwideview.dev';
-        const res = await fetch(`${engineBase}/data/gps_jamming`);
-        const json = await res.json();
-        const items = json.items || [];
-        
-        const cellMap = new Map<string, { count: number, highest: number, region: string }>();
-        const levelScore = { "low": 1, "medium": 2, "high": 3 };
-        
-        for (const item of items) {
-             const cell = latLngToCell(item.lat, item.lon, 3);
-             const score = levelScore[item.interferenceLevel as keyof typeof levelScore] || 1;
-             
-             if (!cellMap.has(cell)) {
-                 cellMap.set(cell, { count: 1, highest: score, region: item.region });
-             } else {
-                 const current = cellMap.get(cell)!;
-                 current.count++;
-                 if (score > current.highest) current.highest = score;
-             }
-        }
-        
-        const scoreNames: Record<number, string> = { 1: "low", 2: "medium", 3: "high" };
-        
-        this.data = Array.from(cellMap.entries()).map(([cell, info]) => {
-            const boundary = cellToBoundary(cell);
-            const polygonHierarchy = boundary.flatMap(coord => [coord[1], coord[0]]); // [lon, lat]
-            const [lat, lon] = cellToLatLng(cell);
+        let engineBase = 'https://dataengine.worldwideview.dev';
+        try {
+            const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
+            engineBase = envUrl
+                ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
+                : 'https://dataengine.worldwideview.dev';
             
-            return {
-                id: `h3_${cell}`,
-                pluginId: this.id,
-                latitude: lat,
-                longitude: lon,
-                timestamp: new Date(),
-                properties: {
-                    h3Boundary: polygonHierarchy,
-                    interferenceLevel: scoreNames[info.highest],
-                    region: info.region,
-                    density: info.count
-                }
-            };
-        });
+            console.log(`[GpsJammingPlugin] Fetching data from: ${engineBase}/data/gps_jamming`);
+            const res = await fetch(`${engineBase}/data/gps_jamming`);
+            if (!res.ok) {
+                throw new Error(`Data Engine returned status ${res.status}: ${res.statusText}`);
+            }
+            const json = await res.json();
+            const items = json.items || [];
+            
+            const cellMap = new Map<string, { count: number, highest: number, region: string }>();
+            const levelScore = { "low": 1, "medium": 2, "high": 3 };
+            
+            for (const item of items) {
+                 const cell = latLngToCell(item.lat, item.lon, 3);
+                 const score = levelScore[item.interferenceLevel as keyof typeof levelScore] || 1;
+                 
+                 if (!cellMap.has(cell)) {
+                     cellMap.set(cell, { count: 1, highest: score, region: item.region });
+                 } else {
+                     const current = cellMap.get(cell)!;
+                     current.count++;
+                     if (score > current.highest) current.highest = score;
+                 }
+            }
+            
+            const scoreNames: Record<number, string> = { 1: "low", 2: "medium", 3: "high" };
+            
+            this.data = Array.from(cellMap.entries()).map(([cell, info]) => {
+                const boundary = cellToBoundary(cell);
+                const polygonHierarchy = boundary.flatMap(coord => [coord[1], coord[0]]); // [lon, lat]
+                const [lat, lon] = cellToLatLng(cell);
+                
+                return {
+                    id: `h3_${cell}`,
+                    pluginId: this.id,
+                    latitude: lat,
+                    longitude: lon,
+                    timestamp: new Date(),
+                    properties: {
+                        h3Boundary: polygonHierarchy,
+                        interferenceLevel: scoreNames[info.highest],
+                        region: info.region,
+                        density: info.count
+                    }
+                };
+            });
+        } catch (err: any) {
+            console.error(`[GpsJammingPlugin] Extremely Fatal Fetch Error ->`, err.message);
+            console.error(`[GpsJammingPlugin] Engine URL attempted: ${engineBase}/data/gps_jamming`);
+            // Forward the error to the global handler before returning empty
+            if (this.context && this.context.onError) {
+                this.context.onError(err);
+            }
+            this.data = [];
+        }
         
         // Cache computationally expensive Cesium parameters to prevent Resium unmount/flicker
         this.renderCache = this.data.map(entity => {

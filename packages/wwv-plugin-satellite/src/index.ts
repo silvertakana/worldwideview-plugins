@@ -60,12 +60,22 @@ export class SatellitePlugin implements WorldPlugin {
         this.context = null;
     }
 
-    private mapPayloadToEntities(data: any): GeoEntity[] {
-        const satelliteItems = Array.isArray(data) ? data : (data.satellites || data.items || []);
+    private mapPayloadToEntities(payloadData: any): GeoEntity[] {
+        let satelliteItems: any[] = [];
         
-        // Handle single satellite updates from websocket streams
-        if (!Array.isArray(data) && data && data.noradId) {
-            satelliteItems.push(data);
+        if (Array.isArray(payloadData)) {
+            satelliteItems = payloadData;
+        } else if (payloadData && Array.isArray(payloadData.satellites)) {
+            satelliteItems = payloadData.satellites;
+        } else if (payloadData && Array.isArray(payloadData.items)) {
+            satelliteItems = payloadData.items;
+        } else if (payloadData && typeof payloadData === 'object') {
+            satelliteItems = Object.values(payloadData);
+        }
+
+        // Drop bad data
+        if (!satelliteItems || !Array.isArray(satelliteItems)) {
+            return [];
         }
 
         return satelliteItems.map(
@@ -93,18 +103,25 @@ export class SatellitePlugin implements WorldPlugin {
     }
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
+        let engineBase = 'https://dataengine.worldwideview.dev';
         try {
             const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
-            const engineBase = envUrl
+            engineBase = envUrl
                 ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
                 : 'https://dataengine.worldwideview.dev';
+            
+            console.log(`[SatellitePlugin] Fetching data from: ${engineBase}/data/satellite`);
             const res = await globalThis.fetch(`${engineBase}/data/satellite`);
             if (!res.ok) throw new Error(`Satellite API returned ${res.status}`);
             const data = await res.json();
             
             return this.mapPayloadToEntities(data);
-        } catch (err) {
-            console.error("[SatellitePlugin] Fetch error:", err);
+        } catch (err: any) {
+            console.error(`[SatellitePlugin] Extremely Fatal Fetch Error ->`, err.message);
+            console.error(`[SatellitePlugin] Engine URL attempted: ${engineBase}/data/satellite`);
+            if (this.context && this.context.onError) {
+                this.context.onError(err);
+            }
             return [];
         }
     }
