@@ -74,7 +74,7 @@ export class MilitaryPlugin extends BaseAviationPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            let engineBase = 'http://localhost:5001';
+            let engineBase = "https://dataengine.worldwideview.dev";
             
             // Safe check for BUNDLE environments where process does not exist globally
             if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL) {

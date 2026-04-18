@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-conflict-events",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "dist/frontend.mjs",
   "types": "src/index.tsx",
   "dependencies": {

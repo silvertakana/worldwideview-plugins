@@ -47,9 +47,14 @@ export class CivilUnrestPlugin implements WorldPlugin {
     }
 
     async fetch(timeRange: TimeRange): Promise<GeoEntity[]> {
-        const engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL
-            ? process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http')
-            : 'http://localhost:5001';
+        let engineBase = "http://localhost:5001";
+            
+            if (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) {
+                const globalUrl = (globalThis as any).__WWV_ENGINE_URL__;
+                engineBase = globalUrl.replace(/\/stream$/, '').replace(/^ws/, 'http');
+            } else if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL) {
+                engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http');
+            }
         const res = await fetch(`${engineBase}/data/civil_unrest`);
         const json = await res.json();
         

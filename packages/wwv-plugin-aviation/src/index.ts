@@ -67,9 +67,14 @@ export class AviationPlugin extends BaseAviationPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            const engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL
-                ? process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http')
-                : 'http://localhost:5001';
+            let engineBase = "https://dataengine.worldwideview.dev";
+            
+            if (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) {
+                const globalUrl = (globalThis as any).__WWV_ENGINE_URL__;
+                engineBase = globalUrl.replace(/\/stream$/, '').replace(/^ws/, 'http');
+            } else if (process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL) {
+                engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http');
+            }
 
             let res: Response;
             if (this.context!.isPlaybackMode()) {

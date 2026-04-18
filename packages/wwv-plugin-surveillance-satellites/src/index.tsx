@@ -47,9 +47,14 @@ export class SurveillanceSatellitesPlugin implements WorldPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            const engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL
-                ? process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http')
-                : 'http://localhost:5001';
+            let engineBase = "http://localhost:5001";
+            
+            if (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) {
+                const globalUrl = (globalThis as any).__WWV_ENGINE_URL__;
+                engineBase = globalUrl.replace(/\/stream$/, '').replace(/^ws/, 'http');
+            } else if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL) {
+                engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http');
+            }
             const res = await globalThis.fetch(`${engineBase}/data/surveillance_satellites`);
             if (!res.ok) throw new Error(`Satellite API returned ${res.status}`);
             const data = await res.json();
