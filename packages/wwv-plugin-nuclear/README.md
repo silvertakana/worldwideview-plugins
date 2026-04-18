@@ -1,37 +1,22 @@
 # @worldwideview/wwv-plugin-nuclear
 
-WorldWideView plugin that displays **global nuclear power plants, reactors, and decommissioned facilities** on the 3D globe.
+WorldWideView plugin displaying global nuclear power plants, reactors, and decommissioned facilities from OpenStreetMap
 
-## Data Source
-
-- **Source:** OpenStreetMap via [Overpass Turbo](https://overpass-turbo.eu/)
-- **Tag:** `generator:source=nuclear`
-- **Format:** Static GeoJSON (~758 facilities worldwide)
-- **License:** [ODbL](https://opendatacommons.org/licenses/odbl/) (OpenStreetMap)
-
-## Features
-
-- Nuclear power plants, research reactors, and decommissioned sites
-- Status classification: operational, decommissioned, abandoned, under construction
-- Operator and output metadata where available
-- Point clustering at global zoom levels
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `nuclear-facilities`
+- **Category:** Infrastructure
+- **Format:** static
 
 ## Installation
-
-Install via the [WorldWideView Marketplace](https://github.com/silvertakana/worldwideview-marketplace) or manually:
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-nuclear
 ```
 
-## Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `static` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-
-## Changelog
-
-- **v1.0.0** — Initial release with global nuclear facility data from OSM.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

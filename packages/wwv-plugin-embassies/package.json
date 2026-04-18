@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-embassies",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "WorldWideView plugin — Global embassies, consulates, and diplomatic missions from OpenStreetMap",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",

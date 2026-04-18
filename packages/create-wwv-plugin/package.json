@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/create-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scaffold a new WorldWideView plugin",
   "type": "module",
   "bin": {

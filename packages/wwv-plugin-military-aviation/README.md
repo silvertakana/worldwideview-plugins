@@ -1,45 +1,22 @@
-# @worldwideview/wwv-plugin-military
+# @worldwideview/wwv-plugin-military-aviation
 
-[WorldWideView](https://github.com/silvertakana/worldwideview) plugin for **real-time military aircraft tracking** via [adsb.lol](https://api.adsb.lol).
-
-## Features
-
-- 🛡️ Live military aircraft positions updated every 60 seconds
-- 🎨 Altitude-based coloring (green → orange → red → pink → yellow)
-- ✈️ 3D airplane model rendering with heading-oriented rotation
-- 📡 Flight trail rendering on entity selection
-- 🔍 Filters: aircraft type, callsign, registration, altitude range, on-ground status
-- 📋 Rich entity properties (hex, squawk, category, emergency status)
-
-## Installation
-
-```bash
-npm install @worldwideview/wwv-plugin-military
-```
-
-### Peer Dependencies
-
-- `@worldwideview/wwv-plugin-sdk`
-- `lucide-react` ≥ 0.576.0
+WorldWideView plugin for real-time military aircraft tracking via adsb.lol. Features altitude-based coloring, flight trail rendering, and aircraft type filters
 
 ## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `military-aviation`
+- **Category:** Aviation
+- **Format:** bundle
 
-```ts
-import { MilitaryPlugin } from "@worldwideview/wwv-plugin-military";
-
-const plugin = new MilitaryPlugin();
+## Installation
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
+```bash
+npm install @worldwideview/wwv-plugin-military-aviation
 ```
 
-Register the plugin with the WorldWideView plugin engine to start tracking military aircraft on the globe.
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `bundle` plugin, it connects to the core Event Bus and renders map capabilities.
 
-## Data Source
-
-Military aircraft data is fetched from [adsb.lol](https://api.adsb.lol/) via the `/api/military` endpoint. No authentication required.
-
-## Changelog
-
-- **v1.0.0** — Initial release. Renamed from wwv-plugin-military for clarity.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

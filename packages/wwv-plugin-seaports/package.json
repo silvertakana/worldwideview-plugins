@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-seaports",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "WorldWideView plugin — Harbours and seaports worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",

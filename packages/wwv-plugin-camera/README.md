@@ -1,54 +1,22 @@
 # @worldwideview/wwv-plugin-camera
 
-[WorldWideView](https://github.com/silvertakana/worldwideview) plugin for displaying **public live cameras and traffic cameras** on the 3D globe.
+WorldWideView plugin for displaying public live cameras and traffic cameras on the globe. Supports custom data sources via URL, file upload, and GeoJSON
 
-## Features
-
-- 📷 Multiple data sources: default camera database, traffic cameras, custom URL, file upload
-- 🌍 GeoJSON support for custom camera datasets
-- 🎥 Live camera detail view with stream embedding
-- ⚙️ Built-in settings component for source selection
-- 🔍 Filters: country, city, popular cameras
-- 📍 Clustered point rendering with labels
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `camera`
+- **Category:** Infrastructure
+- **Format:** bundle
 
 ## Installation
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-camera
 ```
 
-### Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `bundle` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-- `react` ≥ 18
-- `lucide-react` ≥ 0.576.0
-
-## Usage
-
-```ts
-import { CameraPlugin } from "@worldwideview/wwv-plugin-camera";
-
-const plugin = new CameraPlugin();
-```
-
-Register the plugin with the WorldWideView plugin engine. The plugin includes a settings component for switching between camera data sources and a detail component for viewing individual camera streams.
-
-## Data Sources
-
-| Source | Description |
-|---|---|
-| `default` | Built-in public camera GeoJSON database |
-| `traffic` | Traffic cameras via `/api/camera/traffic` endpoint |
-| `url` | Custom JSON URL providing camera data |
-| `file` | User-uploaded JSON file with camera data |
-
-## Changelog
-
-- **v1.0.3** — Added README with feature list and usage docs.
-- **v1.0.2** — Package metadata updates.
-- **v1.0.1** — Package configuration fixes.
-- **v1.0.0** — Initial release with curated public camera feeds.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

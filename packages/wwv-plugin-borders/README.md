@@ -1,40 +1,22 @@
 # @worldwideview/wwv-plugin-borders
 
-[WorldWideView](https://github.com/silvertakana/worldwideview) plugin that displays **political borders and country labels** as a globe overlay.
+WorldWideView plugin that displays political borders and country labels as a globe overlay
 
-## Features
-
-- 🗺️ Country border outlines rendered on the 3D globe
-- 🏷️ Country name labels
-- ⚡ Zero-polling — static layer with no data fetching overhead
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `borders`
+- **Category:** Custom
+- **Format:** bundle
 
 ## Installation
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-borders
 ```
 
-### Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `bundle` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-
-## Usage
-
-```ts
-import { BordersPlugin } from "@worldwideview/wwv-plugin-borders";
-
-const plugin = new BordersPlugin();
-```
-
-Register the plugin with the WorldWideView plugin engine to display borders on the globe. Border rendering is managed by the host application's `BordersManager`.
-
-## Changelog
-
-- **v1.0.3** — Added README with feature list and usage docs.
-- **v1.0.2** — Package metadata updates.
-- **v1.0.1** — Package configuration fixes.
-- **v1.0.0** — Initial release with GeoJSON-based political boundaries.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

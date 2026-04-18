@@ -1,19 +1,22 @@
 # @worldwideview/wwv-plugin-satellite
 
-Real-time satellite tracking plugin for [WorldWideView](https://github.com/silvertakana/worldwideview).
+WorldWideView plugin for real-time satellite tracking using CelesTrak TLE data and SGP4 propagation. Tracks ISS, Starlink, GPS, weather, military, and reconnaissance satellites on the 3D globe.
 
-## Features
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `satellite`
+- **Category:** Space
+- **Format:** bundle
 
-- Tracks ISS, GPS, weather, Earth observation, and other satellites in real time
-- Uses CelesTrak TLE data with SGP4 propagation via `satellite.js`
-- Group-based coloring (stations=cyan, GPS=green, weather=purple, etc.)
-- Orbital trail rendering on entity selection
-- Filter by satellite group
+## Installation
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
+```bash
+npm install @worldwideview/wwv-plugin-satellite
+```
 
-## Data Source
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `bundle` plugin, it connects to the core Event Bus and renders map capabilities.
 
-[CelesTrak](https://celestrak.org/) General Perturbations (GP) data API. Free, no API key required.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

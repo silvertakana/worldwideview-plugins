@@ -1,48 +1,22 @@
 # @worldwideview/wwv-plugin-aviation
 
-[WorldWideView](https://github.com/silvertakana/worldwideview) plugin for **real-time commercial aircraft tracking** via the [OpenSky Network](https://opensky-network.org/) API.
+WorldWideView plugin for real-time commercial aircraft tracking via the OpenSky Network API. Renders 3D aircraft models with altitude-based coloring, flight trails, and country/altitude/callsign filters
 
-## Features
-
-- 🛩️ Live aircraft positions updated every 15 seconds
-- 🎨 Altitude-based color coding (green → cyan → blue → purple → pink)
-- ✈️ 3D airplane model rendering with heading-oriented rotation
-- 🔍 Filters: country of origin, altitude range, on-ground status, callsign
-- 📡 Flight trail rendering on entity selection
-- ⏪ History playback mode support
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `aviation`
+- **Category:** Aviation
+- **Format:** bundle
 
 ## Installation
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-aviation
 ```
 
-### Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `bundle` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-- `lucide-react` ≥ 0.576.0
-
-## Usage
-
-```ts
-import { AviationPlugin } from "@worldwideview/wwv-plugin-aviation";
-
-const plugin = new AviationPlugin();
-```
-
-Register the plugin with the WorldWideView plugin engine to start tracking aircraft on the globe.
-
-## Data Source
-
-Live data is fetched from the [OpenSky Network REST API](https://openskynetwork.github.io/opensky-api/). Requires server-side API route at `/api/aviation`.
-
-## Changelog
-
-- **v1.0.3** — Added README with feature list and usage docs.
-- **v1.0.2** — Package metadata updates.
-- **v1.0.1** — Package configuration fixes.
-- **v1.0.0** — Initial release with live tracking, altitude coloring, and 3D model rendering.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

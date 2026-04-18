@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-daynight",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "WorldWideView plugin — Day/Night terminator overlay showing sunlit and dark regions of the globe in real-time.",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",

@@ -1,18 +1,18 @@
-# @worldwideview/wwv-plugin-daynight
+# @worldwideview/wwv-lib-facilities
 
-WorldWideView plugin — Day/Night terminator overlay showing sunlit and dark regions of the globe in real-time.
+Shared abstract base classes for WorldWideView facility plugins (airports, seaports, nuclear sites)
 
 ## Usage
 This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
-- **ID:** `daynight`
-- **Category:** Custom
+- **ID:** `wwv-lib-facilities`
+- **Category:** Miscellaneous
 - **Format:** bundle
 
 ## Installation
 Typically installed via the WorldWideView Marketplace or discovered automatically.
 If installing manually in a Next.js setup:
 ```bash
-npm install @worldwideview/wwv-plugin-daynight
+npm install @worldwideview/wwv-lib-facilities
 ```
 
 ## Architecture

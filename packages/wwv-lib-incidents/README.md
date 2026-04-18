@@ -1,18 +1,18 @@
-# @worldwideview/wwv-plugin-daynight
+# @worldwideview/wwv-lib-incidents
 
-WorldWideView plugin — Day/Night terminator overlay showing sunlit and dark regions of the globe in real-time.
+Shared abstract base classes for WorldWideView incident plugins (earthquakes, wildfires, conflicts)
 
 ## Usage
 This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
-- **ID:** `daynight`
-- **Category:** Custom
+- **ID:** `wwv-lib-incidents`
+- **Category:** Miscellaneous
 - **Format:** bundle
 
 ## Installation
 Typically installed via the WorldWideView Marketplace or discovered automatically.
 If installing manually in a Next.js setup:
 ```bash
-npm install @worldwideview/wwv-plugin-daynight
+npm install @worldwideview/wwv-lib-incidents
 ```
 
 ## Architecture

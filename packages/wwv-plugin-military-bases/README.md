@@ -1,33 +1,22 @@
 # @worldwideview/wwv-plugin-military-bases
 
-[WorldWideView](https://github.com/silvertakana/worldwideview) plugin that displays **worldwide military bases, airfields, and barracks** on the 3D globe.
+WorldWideView plugin for worldwide military bases, airfields, and barracks from OpenStreetMap
 
-## Features
-
-- 🏛️ Military installations sourced from OpenStreetMap
-- 📍 Point markers with clustering for dense regions
-- ⚡ Static GeoJSON layer — no external API calls at runtime
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `military-bases`
+- **Category:** Military
+- **Format:** static
 
 ## Installation
-
-Install via the WorldWideView Marketplace, or manually:
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-military-bases
 ```
 
-### Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `static` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-
-## How It Works
-
-This is a **static format** plugin. The GeoJSON data file is served by the host application at `/data/military_bases.geojson`. The plugin manifest tells WorldWideView's `StaticDataPlugin` loader how to render the data (point markers, clustering, colour).
-
-## Changelog
-
-- **v1.0.0** — Initial release with OSM military installation data.
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

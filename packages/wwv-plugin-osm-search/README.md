@@ -1,10 +1,10 @@
-# @worldwideview/wwv-plugin-daynight
+# @worldwideview/wwv-plugin-osm-search
 
-WorldWideView plugin — Day/Night terminator overlay showing sunlit and dark regions of the globe in real-time.
+OSM Search Plugin for WorldWideView
 
 ## Usage
 This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
-- **ID:** `daynight`
+- **ID:** `osm-search`
 - **Category:** Custom
 - **Format:** bundle
 
@@ -12,7 +12,7 @@ This package is part of the WorldWideView plugin ecosystem. It provides the foll
 Typically installed via the WorldWideView Marketplace or discovered automatically.
 If installing manually in a Next.js setup:
 ```bash
-npm install @worldwideview/wwv-plugin-daynight
+npm install @worldwideview/wwv-plugin-osm-search
 ```
 
 ## Architecture

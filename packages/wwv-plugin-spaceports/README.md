@@ -1,24 +1,22 @@
 # @worldwideview/wwv-plugin-spaceports
 
-WorldWideView plugin — **Spaceports**.
+WorldWideView plugin — Space launch sites worldwide from OSM
 
-## Data Source
-
-- **Source:** OpenStreetMap via [Overpass Turbo](https://overpass-turbo.eu/)
-- **Tag:** `aeroway=spaceport`
-- **Format:** Static GeoJSON (47 features)
-- **License:** [ODbL](https://opendatacommons.org/licenses/odbl/) (OpenStreetMap)
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `spaceports`
+- **Category:** Space
+- **Format:** static
 
 ## Installation
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-spaceports
 ```
 
-## Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `static` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*

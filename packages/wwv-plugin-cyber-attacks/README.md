@@ -1,18 +1,18 @@
-# @worldwideview/wwv-plugin-daynight
+# @worldwideview/wwv-plugin-cyber-attacks
 
-WorldWideView plugin — Day/Night terminator overlay showing sunlit and dark regions of the globe in real-time.
+WorldWideView plugin covering cyber attacks features.
 
 ## Usage
 This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
-- **ID:** `daynight`
-- **Category:** Custom
+- **ID:** `cyber-attacks`
+- **Category:** Intelligence
 - **Format:** bundle
 
 ## Installation
 Typically installed via the WorldWideView Marketplace or discovered automatically.
 If installing manually in a Next.js setup:
 ```bash
-npm install @worldwideview/wwv-plugin-daynight
+npm install @worldwideview/wwv-plugin-cyber-attacks
 ```
 
 ## Architecture

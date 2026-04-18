@@ -1,24 +1,22 @@
 # @worldwideview/wwv-plugin-volcanoes
 
-WorldWideView plugin — **Volcanoes**.
+WorldWideView plugin — Active and dormant volcanoes worldwide from OSM
 
-## Data Source
-
-- **Source:** OpenStreetMap via [Overpass Turbo](https://overpass-turbo.eu/)
-- **Tag:** `natural=volcano`
-- **Format:** Static GeoJSON (9801 features)
-- **License:** [ODbL](https://opendatacommons.org/licenses/odbl/) (OpenStreetMap)
+## Usage
+This package is part of the WorldWideView plugin ecosystem. It provides the following capabilities:
+- **ID:** `volcanoes`
+- **Category:** Natural Disaster
+- **Format:** static
 
 ## Installation
-
+Typically installed via the WorldWideView Marketplace or discovered automatically.
+If installing manually in a Next.js setup:
 ```bash
 npm install @worldwideview/wwv-plugin-volcanoes
 ```
 
-## Peer Dependencies
+## Architecture
+This plugin adheres to the WorldWideView standard plugin structure. As a `static` plugin, it connects to the core Event Bus and renders map capabilities.
 
-- `@worldwideview/wwv-plugin-sdk`
-
-## License
-
-ISC
+---
+*Built for WorldWideView.*
