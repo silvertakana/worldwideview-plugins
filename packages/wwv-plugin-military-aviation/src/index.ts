@@ -74,14 +74,10 @@ export class MilitaryPlugin extends BaseAviationPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            let engineBase = "https://dataengine.worldwideview.dev";
+            let engineBase = this.context?.env?.DATA_ENGINE_URL || "https://dataengine.worldwideview.dev";
             
-            // Safe check for BUNDLE environments where process does not exist globally
-            if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL) {
-                engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http');
-            } else if ((globalThis as any).__WWV_HOST__?.NEXT_PUBLIC_WS_ENGINE_URL) {
-                engineBase = (globalThis as any).__WWV_HOST__.NEXT_PUBLIC_WS_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http');
-            }
+            // Clean up trailing slash if present
+            engineBase = engineBase.replace(/\/$/, "");
 
             const res = await globalThis.fetch(`${engineBase}/data/military-aviation`);
             if (!res.ok) throw new Error(`Military API returned ${res.status}`);

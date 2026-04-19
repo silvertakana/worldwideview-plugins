@@ -1,0 +1,24 @@
+{
+  "name": "@worldwideview/cli",
+  "version": "1.0.0",
+  "description": "WorldWideView Developer CLI",
+  "type": "module",
+  "bin": {
+    "wwv": "./dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --packages=external --format=esm --outfile=dist/index.mjs",
+    "dev": "esbuild src/index.ts --bundle --platform=node --packages=external --format=esm --outfile=dist/index.mjs --watch"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "@types/node": "^20.12.0",
+    "typescript": "^5.4.0"
+  }
+}

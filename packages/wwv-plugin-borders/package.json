@@ -29,7 +29,7 @@
   "license": "ISC",
   "author": "WorldWideView",
   "peerDependencies": {
-    "@worldwideview/wwv-plugin-sdk": "^1.2.7"
+    "@worldwideview/wwv-plugin-sdk": "^1.4.10"
   },
   "worldwideview": {
     "id": "borders",

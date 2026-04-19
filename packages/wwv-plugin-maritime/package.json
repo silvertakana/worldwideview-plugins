@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-maritime",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "WorldWideView plugin for real-time vessel tracking via AIS feeds. Color-coded by vessel type with speed and heading indicators",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
@@ -30,7 +30,7 @@
   "license": "ISC",
   "author": "WorldWideView",
   "peerDependencies": {
-    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
+    "@worldwideview/wwv-plugin-sdk": "^1.4.10",
     "lucide-react": ">=0.576.0"
   },
   "worldwideview": {

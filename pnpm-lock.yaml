@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: ^1.8.0
         version: 1.8.0(react@19.2.5)
@@ -37,29 +37,39 @@ importers:
         specifier: ^0.25.0
         version: 0.25.12
 
+  packages/wwv-cli:
+    dependencies:
+      commander:
+        specifier: ^12.0.0
+        version: 12.1.0
+    devDependencies:
+      '@types/node':
+        specifier: ^20.12.0
+        version: 20.19.39
+      esbuild:
+        specifier: ^0.25.0
+        version: 0.25.12
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
   packages/wwv-lib-aviation:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.1
-        version: 1.2.7(react@19.2.5)
-
-  packages/wwv-lib-facilities:
-    dependencies:
-      '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.1
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-lib-incidents:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.1
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-air-defense:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -73,12 +83,9 @@ importers:
 
   packages/wwv-plugin-airports:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-aviation:
     dependencies:
@@ -86,8 +93,8 @@ importers:
         specifier: workspace:*
         version: link:../wwv-lib-aviation
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: '>=0.576.0'
         version: 1.8.0(react@19.2.5)
@@ -95,14 +102,14 @@ importers:
   packages/wwv-plugin-borders:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-camera:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: '>=0.576.0'
         version: 1.8.0(react@19.2.5)
@@ -113,8 +120,8 @@ importers:
   packages/wwv-plugin-civil-unrest:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       cesium:
         specifier: ^1.139.0
         version: 1.140.0
@@ -141,8 +148,8 @@ importers:
         specifier: workspace:*
         version: link:../wwv-lib-incidents
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       cesium:
         specifier: ^1.139.0
         version: 1.140.0
@@ -166,8 +173,8 @@ importers:
   packages/wwv-plugin-conflict-zones:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -181,6 +188,9 @@ importers:
 
   packages/wwv-plugin-cyber-attacks:
     dependencies:
+      '@worldwideview/wwv-plugin-sdk':
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: ^0.364.0
         version: 0.364.0(react@19.2.5)
@@ -195,8 +205,8 @@ importers:
   packages/wwv-plugin-daynight:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@19.2.5)
@@ -207,26 +217,23 @@ importers:
         specifier: workspace:*
         version: link:../wwv-lib-incidents
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: ^0.368.0
         version: 0.368.0(react@19.2.5)
 
   packages/wwv-plugin-embassies:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-gps-jamming:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       cesium:
         specifier: ^1.139.0
         version: 1.140.0
@@ -269,23 +276,20 @@ importers:
         specifier: workspace:*
         version: link:../wwv-lib-incidents
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-lighthouses:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-maritime:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: '>=0.576.0'
         version: 1.8.0(react@19.2.5)
@@ -296,26 +300,23 @@ importers:
         specifier: workspace:*
         version: link:../wwv-lib-aviation
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: '>=0.576.0'
         version: 1.8.0(react@19.2.5)
 
   packages/wwv-plugin-military-bases:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-mineral-mines:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -329,18 +330,15 @@ importers:
 
   packages/wwv-plugin-nuclear:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-osm-search:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       cesium:
         specifier: ^1.139.0
         version: 1.140.0
@@ -373,29 +371,23 @@ importers:
   packages/wwv-plugin-satellite:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: '>=0.576.0'
         version: 1.8.0(react@19.2.5)
 
   packages/wwv-plugin-seaports:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-spaceports:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-surveillance-satellites:
     dependencies:
@@ -413,8 +405,8 @@ importers:
   packages/wwv-plugin-undersea-cables:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: ^0.364.0
         version: 0.364.0(react@19.2.5)
@@ -431,18 +423,15 @@ importers:
 
   packages/wwv-plugin-volcanoes:
     dependencies:
-      '@worldwideview/wwv-lib-facilities':
-        specifier: workspace:*
-        version: link:../wwv-lib-facilities
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
 
   packages/wwv-plugin-wildfire:
     dependencies:
       '@worldwideview/wwv-plugin-sdk':
-        specifier: ^1.2.7
-        version: 1.2.7(react@19.2.5)
+        specifier: ^1.4.10
+        version: 1.4.10(react@19.2.5)
       lucide-react:
         specifier: '>=0.576.0'
         version: 1.8.0(react@19.2.5)
@@ -937,6 +926,9 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
+  '@types/node@20.19.39':
+    resolution: {integrity: sha512-orrrD74MBUyK8jOAD/r0+lfa1I2MO6I+vAkmAWzMYbCcgrN4lCrmK52gRFQq/JRxfYPfonkr4b0jcY7Olqdqbw==}
+
   '@types/node@22.19.17':
     resolution: {integrity: sha512-wGdMcf+vPYM6jikpS/qhg6WiqSV/OhG+jeeHT/KlVqxYfD40iYJf9/AE1uQxVWFvU7MipKRkRv8NSHiCGgPr8Q==}
 
@@ -988,8 +980,8 @@ packages:
   '@vitest/utils@4.1.4':
     resolution: {integrity: sha512-13QMT+eysM5uVGa1rG4kegGYNp6cnQcsTc67ELFbhNLQO+vgsygtYJx2khvdt4gVQqSSpC/KT5FZZxUpP3Oatw==}
 
-  '@worldwideview/wwv-plugin-sdk@1.2.7':
-    resolution: {integrity: sha512-mbnGtGHtAwfuAJ+YgJhAbc2Zv1ZX516IJAPUlElM/dB7xWLTDjkhMGdTYPrN2s7WGQ3F+ZbrWeBbC7ad0qegog==}
+  '@worldwideview/wwv-plugin-sdk@1.4.10':
+    resolution: {integrity: sha512-tiDk9YhL/7IUrs5+6/cvm5XAYjsBO6X/Q/705Q7jODrTNC90NFe2b6rNy1ooGrNRwVk8eUG+/hhIQbai9NCLuA==}
     peerDependencies:
       react: '>=18'
 
@@ -1014,6 +1006,10 @@ packages:
 
   chai@6.2.2:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
+    engines: {node: '>=18'}
+
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
 
   commander@2.20.3:
@@ -1752,6 +1748,10 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
+  '@types/node@20.19.39':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/node@22.19.17':
     dependencies:
       undici-types: 6.21.0
@@ -1809,7 +1809,7 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
 
-  '@worldwideview/wwv-plugin-sdk@1.2.7(react@19.2.5)':
+  '@worldwideview/wwv-plugin-sdk@1.4.10(react@19.2.5)':
     dependencies:
       react: 19.2.5
 
@@ -1829,6 +1829,8 @@ snapshots:
       '@cesium/widgets': 14.5.0
 
   chai@6.2.2: {}
+
+  commander@12.1.0: {}
 
   commander@2.20.3: {}
 

@@ -17,9 +17,9 @@ for (const pkg of packages) {
     // 1. Update package.json
     const pkgJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
     
-    // Replace sdk peerDep from workspace:* to ^1.2.1
+    // Replace sdk peerDep from workspace:* to ^1.4.10
     if (pkgJson.peerDependencies && pkgJson.peerDependencies["@worldwideview/wwv-plugin-sdk"]) {
-        pkgJson.peerDependencies["@worldwideview/wwv-plugin-sdk"] = "^1.2.1";
+        pkgJson.peerDependencies["@worldwideview/wwv-plugin-sdk"] = "^1.4.10";
     }
 
     // Update repository

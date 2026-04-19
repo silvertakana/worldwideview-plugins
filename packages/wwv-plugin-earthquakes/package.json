@@ -3,8 +3,8 @@
   "version": "1.1.8",
   "main": "dist/frontend.mjs",
   "dependencies": {
-    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
     "@worldwideview/wwv-lib-incidents": "workspace:*",
+    "@worldwideview/wwv-plugin-sdk": "^1.4.10",
     "lucide-react": "^0.368.0"
   },
   "worldwideview": {

@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
-import { wwvPluginGlobals } from "@worldwideview/wwv-plugin-sdk";
+import { wwvPluginGlobals, wwvStaticCompiler } from "@worldwideview/wwv-plugin-sdk";
 
 export default defineConfig({
-  plugins: [wwvPluginGlobals()],
+  plugins: [wwvStaticCompiler(), wwvPluginGlobals()],
   build: {
     lib: {
       entry: "src/index.ts",

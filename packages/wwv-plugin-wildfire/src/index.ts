@@ -47,14 +47,14 @@ export class WildfirePlugin implements WorldPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            let engineBase = "https://dataengine.worldwideview.dev";
+            let engineBase = this.context?.env?.DATA_ENGINE_URL || "https://dataengine.worldwideview.dev";
             
-            if (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) {
-                const globalUrl = (globalThis as any).__WWV_ENGINE_URL__;
-                engineBase = globalUrl.replace(/\/stream$/, '').replace(/^ws/, 'http');
-            } else if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL) {
-                engineBase = process.env.NEXT_PUBLIC_DEFAULT_ENGINE_URL.replace(/\/stream$/, '').replace(/^ws/, 'http');
-            }
+
+
+
+
+
+
             const res = await globalThis.fetch(`${engineBase}/data/wildfires`);
             if (!res.ok) throw new Error(`Wildfire API returned ${res.status}`);
             const data = await res.json();

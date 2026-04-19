@@ -6,7 +6,7 @@
     "build": "pnpm -r --filter './packages/wwv-plugin-*' run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "sync": "node scripts/sync-local.mjs"
+    "sync:all": "node local-scripts/sync-all.mjs"
   },
   "devDependencies": {
     "@types/react": "^19",
@@ -16,7 +16,7 @@
     "vitest": "^4.0.18"
   },
   "dependencies": {
-    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
+    "@worldwideview/wwv-plugin-sdk": "^1.4.10",
     "lucide-react": "^1.8.0"
   }
 }

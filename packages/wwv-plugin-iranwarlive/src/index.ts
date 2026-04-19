@@ -85,10 +85,8 @@ export class IranWarLivePlugin extends BaseIncidentPlugin {
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
         try {
-            const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
-            const engineBase = envUrl
-                ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
-                : 'https://dataengine.worldwideview.dev';
+            let engineBase = this.context?.env?.DATA_ENGINE_URL || "https://dataengine.worldwideview.dev";
+            engineBase = engineBase.replace(/\/$/, "");
             const res = await globalThis.fetch(`${engineBase}/data/iranwarlive`);
             
             if (!res.ok) throw new Error(`IranWarLive Backend returned ${res.status}`);

@@ -103,12 +103,9 @@ export class SatellitePlugin implements WorldPlugin {
     }
 
     async fetch(_timeRange: TimeRange): Promise<GeoEntity[]> {
-        let engineBase = 'https://dataengine.worldwideview.dev';
+        let engineBase = this.context?.env?.DATA_ENGINE_URL || "https://dataengine.worldwideview.dev";
         try {
-            const envUrl = (typeof globalThis !== 'undefined' && (globalThis as any).__WWV_ENGINE_URL__) as string | undefined;
-            engineBase = envUrl
-                ? envUrl.replace(/\/stream$/, '').replace(/^ws/, 'http')
-                : 'https://dataengine.worldwideview.dev';
+            engineBase = engineBase.replace(/\/$/, "");
             
             console.log(`[SatellitePlugin] Fetching data from: ${engineBase}/data/satellite`);
             const res = await globalThis.fetch(`${engineBase}/data/satellite`);

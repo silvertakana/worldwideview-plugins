@@ -1,9 +1,8 @@
 {
   "name": "@worldwideview/wwv-plugin-military-bases",
-  "version": "1.0.12",
+  "version": "1.1.5",
   "description": "WorldWideView plugin for worldwide military bases, airfields, and barracks from OpenStreetMap",
   "main": "dist/frontend.mjs",
-  "types": "src/index.ts",
   "files": [
     "src"
   ],
@@ -30,19 +29,18 @@
   "license": "ISC",
   "author": "WorldWideView",
   "peerDependencies": {
-    "@worldwideview/wwv-plugin-sdk": "^1.2.7",
-    "@worldwideview/wwv-lib-facilities": "workspace:*"
+    "@worldwideview/wwv-plugin-sdk": "^1.4.10"
   },
   "worldwideview": {
     "id": "military-bases",
     "icon": "Swords",
     "category": "Military",
-    "format": "static",
+    "format": "bundle",
     "capabilities": [
       "layer"
     ],
-    "type": "data",
-    "dataFile": "data/military-bases.geojson",
+    "type": "data-layer",
+    "dataFile": "data/data.json",
     "rendering": {
       "defaultColor": "#ffffff",
       "iconUrl": "/icons/default.svg"

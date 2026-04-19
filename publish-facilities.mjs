@@ -9,7 +9,8 @@ const packagesToRepublish = [
   'wwv-plugin-lighthouses',
   'wwv-plugin-seaports',
   'wwv-plugin-spaceports',
-  'wwv-plugin-volcanoes'
+  'wwv-plugin-volcanoes',
+  'wwv-plugin-nuclear'
 ];
 
 const packagesDir = 'C:\\dev\\worldwideview-plugins\\packages';

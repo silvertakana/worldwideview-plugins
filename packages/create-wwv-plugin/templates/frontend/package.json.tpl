@@ -7,9 +7,12 @@
   "files": ["dist"],
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "validate": "wwv validate",
+    "link": "wwv link ../worldwideview"
   },
   "devDependencies": {
+    "@worldwideview/cli": "*",
     "@worldwideview/wwv-plugin-sdk": "*",
     "vite": "^6.0.0",
     "rollup-plugin-external-globals": "^0.12.0",
