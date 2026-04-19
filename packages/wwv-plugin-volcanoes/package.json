@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-volcanoes",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "WorldWideView plugin — Active and dormant volcanoes worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-spaceports",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "WorldWideView plugin — Space launch sites worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",

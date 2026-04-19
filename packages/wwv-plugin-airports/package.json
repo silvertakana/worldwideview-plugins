@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-airports",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "WorldWideView plugin — Airports and aerodromes worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",

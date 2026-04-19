@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-military-bases",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "WorldWideView plugin for worldwide military bases, airfields, and barracks from OpenStreetMap",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
