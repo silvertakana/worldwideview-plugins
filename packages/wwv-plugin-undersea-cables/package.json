@@ -21,7 +21,10 @@
     "id": "undersea-cables",
     "format": "bundle",
     "category": "Custom",
-    "icon": "Layer"
+    "icon": "Layer",
+    "capabilities": [
+      "layer"
+    ]
   },
   "module": "dist/frontend.mjs",
   "type": "module"

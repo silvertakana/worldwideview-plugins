@@ -16,7 +16,10 @@
     "id": "civil-unrest",
     "format": "bundle",
     "category": "Conflict",
-    "icon": "Crosshair"
+    "icon": "Crosshair",
+    "capabilities": [
+      "layer"
+    ]
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

@@ -38,7 +38,10 @@
     "id": "camera",
     "icon": "Camera",
     "category": "Infrastructure",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

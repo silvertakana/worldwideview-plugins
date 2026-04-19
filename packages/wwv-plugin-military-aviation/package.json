@@ -38,7 +38,10 @@
     "id": "military-aviation",
     "icon": "Shield",
     "category": "Aviation",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

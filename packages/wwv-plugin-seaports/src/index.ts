@@ -3,6 +3,7 @@ import { BaseFacilityPlugin } from "@worldwideview/wwv-lib-facilities";
 
 export class SeaportsPlugin extends BaseFacilityPlugin {
     id = "seaports";
+    protected geojsonData = geojsonData;
     name = "Seaports";
     description = "Harbours and seaports worldwide from OSM";
     icon = Anchor;

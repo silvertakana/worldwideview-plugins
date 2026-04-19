@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-embassies",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "description": "WorldWideView plugin — Global embassies, consulates, and diplomatic missions from OpenStreetMap",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
@@ -33,7 +33,16 @@
     "id": "embassies",
     "icon": "Landmark",
     "category": "Custom",
-    "format": "static"
+    "format": "static",
+    "capabilities": [
+      "layer"
+    ],
+    "type": "data",
+    "dataFile": "data/embassies.geojson",
+    "rendering": {
+      "defaultColor": "#ffffff",
+      "iconUrl": "/icons/default.svg"
+    }
   },
   "type": "module",
   "module": "dist/frontend.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-airports",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "WorldWideView plugin — Airports and aerodromes worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
@@ -33,7 +33,16 @@
     "id": "airports",
     "icon": "PlaneTakeoff",
     "category": "Aviation",
-    "format": "bundle"
+    "format": "static",
+    "capabilities": [
+      "layer"
+    ],
+    "type": "data",
+    "dataFile": "data/airports.geojson",
+    "rendering": {
+      "defaultColor": "#ffffff",
+      "iconUrl": "/icons/default.svg"
+    }
   },
   "type": "module",
   "module": "dist/frontend.mjs",

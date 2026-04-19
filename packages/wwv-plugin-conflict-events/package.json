@@ -17,7 +17,10 @@
     "id": "conflict-events",
     "format": "bundle",
     "category": "Conflict",
-    "icon": "Crosshair"
+    "icon": "Crosshair",
+    "capabilities": [
+      "layer"
+    ]
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

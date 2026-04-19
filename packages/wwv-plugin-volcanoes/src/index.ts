@@ -3,6 +3,7 @@ import { BaseFacilityPlugin } from "@worldwideview/wwv-lib-facilities";
 
 export class VolcanoesPlugin extends BaseFacilityPlugin {
     id = "volcanoes";
+    protected geojsonData = geojsonData;
     name = "Volcanoes";
     description = "Active and dormant volcanoes worldwide from OSM";
     icon = Mountain;

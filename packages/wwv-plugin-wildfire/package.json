@@ -38,7 +38,10 @@
     "id": "wildfire",
     "icon": "Flame",
     "category": "Natural Disaster",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

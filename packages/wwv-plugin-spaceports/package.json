@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-spaceports",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "WorldWideView plugin — Space launch sites worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
@@ -33,7 +33,16 @@
     "id": "spaceports",
     "icon": "Rocket",
     "category": "Space",
-    "format": "static"
+    "format": "static",
+    "capabilities": [
+      "layer"
+    ],
+    "type": "data",
+    "dataFile": "data/spaceports.geojson",
+    "rendering": {
+      "defaultColor": "#ffffff",
+      "iconUrl": "/icons/default.svg"
+    }
   },
   "type": "module",
   "module": "dist/frontend.mjs",

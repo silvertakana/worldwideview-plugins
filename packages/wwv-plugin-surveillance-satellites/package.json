@@ -9,7 +9,10 @@
     "id": "surveillance-satellites",
     "format": "bundle",
     "category": "Space",
-    "icon": "Rocket"
+    "icon": "Rocket",
+    "capabilities": [
+      "layer"
+    ]
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

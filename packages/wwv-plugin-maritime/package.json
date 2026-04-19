@@ -37,7 +37,10 @@
     "id": "maritime",
     "icon": "Ship",
     "category": "Maritime",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

@@ -16,7 +16,10 @@
     "id": "iranwarlive",
     "icon": "ShieldAlert",
     "category": "Conflict",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

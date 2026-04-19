@@ -11,7 +11,10 @@
     "id": "earthquakes",
     "icon": "Activity",
     "category": "Natural Disasters",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

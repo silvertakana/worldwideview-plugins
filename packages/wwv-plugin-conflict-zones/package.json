@@ -32,7 +32,10 @@
     "id": "conflict-zones",
     "icon": "Crosshair",
     "category": "Conflict",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

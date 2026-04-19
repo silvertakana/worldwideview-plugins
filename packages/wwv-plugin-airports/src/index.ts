@@ -1,9 +1,11 @@
 import { PlaneTakeoff } from "lucide-react";
 import { BaseFacilityPlugin } from "@worldwideview/wwv-lib-facilities";
 import type { GeoEntity, TimeRange } from "@worldwideview/wwv-plugin-sdk";
+import geojsonData from "../data/data.json";
 
 export class AirportsPlugin extends BaseFacilityPlugin {
     id = "airports";
+    protected geojsonData = geojsonData;
     name = "Airports";
     description = "Airports and aerodromes worldwide from OSM";
     icon = PlaneTakeoff;

@@ -22,7 +22,10 @@
     "id": "osm-search",
     "format": "bundle",
     "category": "Custom",
-    "icon": "Layer"
+    "icon": "Layer",
+    "capabilities": [
+      "layer"
+    ]
   },
   "module": "dist/frontend.mjs",
   "scripts": {

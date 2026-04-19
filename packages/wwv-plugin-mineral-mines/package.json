@@ -38,7 +38,10 @@
     "id": "mineral-mines",
     "icon": "Pickaxe",
     "category": "Economic",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

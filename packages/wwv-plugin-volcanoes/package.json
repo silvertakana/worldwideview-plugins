@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-volcanoes",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "WorldWideView plugin — Active and dormant volcanoes worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
@@ -33,7 +33,16 @@
     "id": "volcanoes",
     "icon": "Mountain",
     "category": "Natural Disaster",
-    "format": "static"
+    "format": "static",
+    "capabilities": [
+      "layer"
+    ],
+    "type": "data",
+    "dataFile": "data/volcanoes.geojson",
+    "rendering": {
+      "defaultColor": "#ffffff",
+      "iconUrl": "/icons/default.svg"
+    }
   },
   "type": "module",
   "module": "dist/frontend.mjs",

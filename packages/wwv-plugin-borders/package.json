@@ -35,7 +35,10 @@
     "id": "borders",
     "icon": "Map",
     "category": "Custom",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",

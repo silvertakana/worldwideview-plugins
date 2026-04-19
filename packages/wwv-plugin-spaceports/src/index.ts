@@ -3,6 +3,7 @@ import { BaseFacilityPlugin } from "@worldwideview/wwv-lib-facilities";
 
 export class SpaceportsPlugin extends BaseFacilityPlugin {
     id = "spaceports";
+    protected geojsonData = geojsonData;
     name = "Spaceports";
     description = "Space launch sites worldwide from OSM";
     icon = Rocket;

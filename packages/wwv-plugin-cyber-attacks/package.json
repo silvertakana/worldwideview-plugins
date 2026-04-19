@@ -9,7 +9,10 @@
     "id": "cyber-attacks",
     "format": "bundle",
     "category": "Intelligence",
-    "icon": "Layer"
+    "icon": "Layer",
+    "capabilities": [
+      "layer"
+    ]
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

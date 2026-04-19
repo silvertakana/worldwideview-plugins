@@ -1,9 +1,11 @@
 import { Lamp, Lightbulb } from "lucide-react";
 import { BaseFacilityPlugin } from "@worldwideview/wwv-lib-facilities";
 import type { GeoEntity } from "@worldwideview/wwv-plugin-sdk";
+import geojsonData from "../data/data.json";
 
 export class LighthousesPlugin extends BaseFacilityPlugin {
     id = "lighthouses";
+    protected geojsonData = geojsonData;
     name = "Lighthouses";
     description = "Lighthouses worldwide from OSM";
     icon = Lamp;

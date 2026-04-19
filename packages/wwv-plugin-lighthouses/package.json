@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/wwv-plugin-lighthouses",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "WorldWideView plugin — Lighthouses worldwide from OSM",
   "main": "dist/frontend.mjs",
   "types": "src/index.ts",
@@ -33,7 +33,16 @@
     "id": "lighthouses",
     "icon": "Lamp",
     "category": "Maritime",
-    "format": "static"
+    "format": "static",
+    "capabilities": [
+      "layer"
+    ],
+    "type": "data",
+    "dataFile": "data/lighthouses.geojson",
+    "rendering": {
+      "defaultColor": "#ffffff",
+      "iconUrl": "/icons/default.svg"
+    }
   },
   "type": "module",
   "module": "dist/frontend.mjs",

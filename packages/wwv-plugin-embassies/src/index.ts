@@ -3,6 +3,7 @@ import { BaseFacilityPlugin } from "@worldwideview/wwv-lib-facilities";
 
 export class EmbassiesConsulatesPlugin extends BaseFacilityPlugin {
     id = "embassies";
+    protected geojsonData = geojsonData;
     name = "Embassies & Consulates";
     description = "Global embassies, consulates, and diplomatic missions from OpenStreetMap";
     icon = Landmark;

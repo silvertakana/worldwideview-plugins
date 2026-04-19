@@ -9,7 +9,10 @@
     "id": "international-sanctions",
     "format": "bundle",
     "category": "Custom",
-    "icon": "Layer"
+    "icon": "Layer",
+    "capabilities": [
+      "layer"
+    ]
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

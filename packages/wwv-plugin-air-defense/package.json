@@ -38,7 +38,10 @@
     "id": "air-defense",
     "icon": "ShieldAlert",
     "category": "Military",
-    "format": "bundle"
+    "format": "bundle",
+    "capabilities": [
+      "layer"
+    ]
   },
   "type": "module",
   "module": "dist/frontend.mjs",
