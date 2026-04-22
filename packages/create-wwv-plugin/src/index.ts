@@ -18,12 +18,15 @@ async function main() {
     console.log("\nWhat type of plugin do you want to create?");
     console.log("1. Frontend-Only (Connects to existing REST APIs or your private backend)");
     console.log("2. Full-Stack (Includes a Fastify backend seeder for the Data Engine)");
+    console.log("3. Shared Backend Host (A BYOB Vercel/Node server to host your compiled backends)");
     
-    let type = await rl.question("\nEnter choice (1 or 2): ");
+    let type = await rl.question("\nEnter choice (1, 2, or 3): ");
     
     rl.close();
 
-    const templateType = type.trim() === "2" ? "fullstack" : "frontend";
+    let templateType: "frontend" | "fullstack" | "backend-host" = "frontend";
+    if (type.trim() === "2") templateType = "fullstack";
+    if (type.trim() === "3") templateType = "backend-host";
 
     scaffold(name, templateType);
 }

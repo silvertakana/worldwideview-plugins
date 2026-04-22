@@ -1,11 +1,24 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
+import { getConfig } from '../config.js';
 
 const green = (t: string) => `\x1b[32m${t}\x1b[0m`;
 const red = (t: string) => `\x1b[31m${t}\x1b[0m`;
 
-export function linkCommand(cwd: string, targetDir: string) {
+export function linkCommand(cwd: string, targetDir?: string) {
+    let finalTarget = targetDir;
+    
+    if (!finalTarget) {
+        finalTarget = getConfig('wwv-path') || undefined;
+    }
+    
+    if (!finalTarget) {
+        console.error(red("❌ No target directory provided and no 'wwv-path' config found."));
+        console.error("Please run `wwv config set wwv-path <path>` or provide the path explicitly.");
+        process.exit(1);
+    }
+
     const pkgPath = path.join(cwd, 'package.json');
     if (!fs.existsSync(pkgPath)) {
         console.error(red(`❌ Cannot link: No package.json found in ${cwd}`));
@@ -39,10 +52,10 @@ export function linkCommand(cwd: string, targetDir: string) {
 
     // Construct the destination. targetDir might be the root of the UI server (../worldwideview)
     // or you might pass the absolute path to public/plugins-local directly.
-    let wwvAppDir = targetDir;
+    let wwvAppDir = finalTarget;
     if (!wwvAppDir.includes('plugins-local')) {
         // Assume they passed the UI root directory
-        wwvAppDir = path.join(targetDir, 'public', 'plugins-local');
+        wwvAppDir = path.join(finalTarget, 'public', 'plugins-local');
     }
     
     const finalDestDir = path.join(wwvAppDir, pluginId);

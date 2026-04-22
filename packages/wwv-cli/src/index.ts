@@ -4,6 +4,7 @@ import { Command } from "commander";
 import { validateCommand } from "./commands/validate.js";
 import { linkCommand } from "./commands/link.js";
 import { sandboxCommand } from "./commands/sandbox.js";
+import { deployBackendCommand } from "./commands/deploy-backend.js";
 import { setConfig } from "./config.js";
 
 const program = new Command();
@@ -33,6 +34,14 @@ program
   .description("Boot a local Mini-Engine and Mini-Globe for rapid plugin testing")
   .action(() => {
     sandboxCommand(process.cwd());
+  });
+
+program
+  .command("deploy-backend")
+  .description("Deploy the compiled backend.mjs to a Plugin Host")
+  .argument('<host-path>', 'Path to the shared backend host (e.g. ../my-plugin-host)')
+  .action((hostPath) => {
+    deployBackendCommand(process.cwd(), hostPath);
   });
 
 program

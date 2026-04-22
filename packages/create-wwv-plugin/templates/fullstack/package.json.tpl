@@ -13,7 +13,7 @@
     "dev": "wwv sandbox",
     "validate": "wwv validate",
     "link": "wwv link",
-    "deploy:backend": "node scripts/deploy-backend.js"
+    "deploy:backend": "wwv deploy-backend"
   },
   "devDependencies": {
     "@worldwideview/cli": "*",
