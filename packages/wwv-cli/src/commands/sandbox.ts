@@ -2,6 +2,7 @@ import { spawn } from 'child_process';
 import path from 'path';
 import Fastify from 'fastify';
 import fastifyStatic from '@fastify/static';
+import cors from '@fastify/cors';
 import fs from 'fs';
 
 const miniGlobeHtml = `
@@ -66,4 +67,46 @@ export async function sandboxCommand(cwd: string) {
 
     await frontendServer.listen({ port: 3000 });
     console.log("🌍 Mini-Globe running at http://localhost:3000");
+
+    let backendServer: any = null;
+
+    async function startBackend() {
+        if (backendServer) {
+            await backendServer.close();
+        }
+
+        backendServer = Fastify();
+        await backendServer.register(cors);
+
+        const backendFile = path.join(cwd, 'dist', 'backend.mjs');
+        if (fs.existsSync(backendFile)) {
+            try {
+                // Cache bust
+                const backendModule = await import(`file://${backendFile}?t=${Date.now()}`);
+                if (backendModule.default && backendModule.default.registerRoutes) {
+                    backendModule.default.registerRoutes(backendServer);
+                }
+            } catch (err) {
+                console.error("❌ Failed to load backend.mjs:", err);
+            }
+        }
+
+        await backendServer.listen({ port: 5001 });
+        console.log("⚙️  Mini-Engine running at http://localhost:5001");
+    }
+
+    // Initial start (give Vite a second to compile)
+    setTimeout(startBackend, 2000);
+
+    // Watch for backend rebuilds
+    const distDir = path.join(cwd, 'dist');
+    if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
+    
+    let debounce: any;
+    fs.watch(distDir, (eventType, filename) => {
+        if (filename === 'backend.mjs') {
+            clearTimeout(debounce);
+            debounce = setTimeout(startBackend, 500);
+        }
+    });
 }
