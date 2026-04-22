@@ -5,11 +5,14 @@
   "type": "module",
   "module": "dist/frontend.mjs",
   "files": ["dist"],
+  "worldwideview": {
+    "id": "{{SLUG}}"
+  },
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
     "validate": "wwv validate",
-    "link": "wwv link ../worldwideview"
+    "link": "wwv link"
   },
   "devDependencies": {
     "@worldwideview/cli": "*",
