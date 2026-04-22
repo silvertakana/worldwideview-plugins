@@ -1,10 +1,10 @@
 {
   "name": "@worldwideview/create-plugin",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "Scaffold a new WorldWideView plugin",
   "type": "module",
   "bin": {
-    "create-wwv-plugin": "./dist/index.mjs"
+    "create-wwv-plugin": "dist/index.mjs"
   },
   "files": [
     "dist",

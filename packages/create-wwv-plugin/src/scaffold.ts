@@ -39,7 +39,13 @@ export function scaffold(name: string, templateType: "frontend" | "fullstack"): 
     console.log(`\n✅ Done! Next steps:`);
     console.log(`  cd ${slug}`);
     console.log(`  npm install`);
-    console.log(`  npm run dev    # Watch mode`);
-    console.log(`  npm run build  # Production bundle`);
-    console.log(`  npm publish    # Publish to npm\n`);
+    console.log(`  `);
+    console.log(`  # 1. Point the CLI to your running WorldWideView instance`);
+    console.log(`  npx wwv config set wwv-path C:\\path\\to\\your\\worldwideview`);
+    console.log(`  `);
+    console.log(`  # 2. Link your plugin into the engine`);
+    console.log(`  npm run link`);
+    console.log(`  `);
+    console.log(`  # 3. Start compiling your code on save`);
+    console.log(`  npm run dev\n`);
 }
