@@ -1,6 +1,6 @@
 {
   "name": "@worldwideview/cli",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "WorldWideView Developer CLI",
   "type": "module",
   "bin": {
