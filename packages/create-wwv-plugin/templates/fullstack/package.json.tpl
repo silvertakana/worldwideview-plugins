@@ -10,9 +10,10 @@
   },
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch",
+    "dev": "wwv sandbox",
     "validate": "wwv validate",
-    "link": "wwv link"
+    "link": "wwv link",
+    "deploy:backend": "node scripts/deploy-backend.js"
   },
   "devDependencies": {
     "@worldwideview/cli": "*",

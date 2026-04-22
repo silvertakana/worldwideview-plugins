@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch",
+    "dev": "wwv sandbox",
     "validate": "wwv validate",
     "link": "wwv link"
   },
