@@ -155,7 +155,9 @@ out center;`;
         ? COMMON_TAGS.filter(t => t.toLowerCase().includes(searchText.toLowerCase())) 
         : COMMON_TAGS;
         
-    const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags]));
+    const customTagMatch = searchText.includes("=") ? [searchText.trim()] : [];
+        
+    const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTagMatch]));
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -259,9 +261,18 @@ out center;`;
                                  borderRadius: "4px",
                                  fontSize: "13px"
                              }}
-                             placeholder="Filter or search OSM for tags..." 
+                             placeholder="Filter, search OSM, or type key=value..." 
                              value={searchText} 
                              onChange={e => setSearchText(e.target.value)} 
+                             onKeyDown={e => {
+                                 if (e.key === "Enter" && searchText.includes("=")) {
+                                     const tag = searchText.trim();
+                                     if (!activeTags.includes(tag)) {
+                                         setActiveTags(prev => [...prev, tag]);
+                                     }
+                                     setSearchText("");
+                                 }
+                             }}
                          />
                          {isSearchingApi && (
                              <span style={{ 
