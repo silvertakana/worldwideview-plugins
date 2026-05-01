@@ -36,6 +36,7 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
     const [searchText, setSearchText] = useState("");
     const [customTags, setCustomTags] = useState<string[]>([]);
     const [showAdvanced, setShowAdvanced] = useState(false);
+    const [advFeat, setAdvFeat] = useState("nwr");
     const [advKey, setAdvKey] = useState("");
     const [advOp, setAdvOp] = useState("=");
     const [advVal, setAdvVal] = useState("");
@@ -120,10 +121,14 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
         } else {
             // Bellingcat-style proximity search
             const filters = activeTags.map(tag => {
-                let key, val, op = "=";
+                let feat = "nwr", key, val, op = "=";
                 if (tag.includes("@@")) {
                     const parts = tag.split("@@");
-                    key = parts[0]; op = parts[1]; val = parts[2];
+                    if (parts.length === 4) {
+                        feat = parts[0]; key = parts[1]; op = parts[2]; val = parts[3];
+                    } else {
+                        key = parts[0]; op = parts[1]; val = parts[2];
+                    }
                 } else if (tag.includes("=")) {
                     const parts = tag.split("=");
                     key = parts[0]; val = parts.slice(1).join("=");
@@ -144,21 +149,21 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                 else if (op === "does_not_contain") filter = `["${key}"!~"${val}"]`;
                 else if (op === "is_null") filter = `[!"${key}"]`;
                 else if (op === "is_not_null") filter = `["${key}"]`;
-                return filter;
+                return { feat, filter };
             });
 
             if (activeTags.length === 1) {
-                ql = `[out:json][timeout:25];\nnwr${filters[0]}(${bboxString});\nout center;`;
+                ql = `[out:json][timeout:25];\n${filters[0].feat}${filters[0].filter}(${bboxString});\nout center;`;
             } else if (activeTags.length > 1) {
                 // Chain search: Find A, then find B near A, then find C near B...
                 // Using .t0, .t1, .t2 as set names
                 ql = `[out:json][timeout:25];\n`;
                 
-                filters.forEach((filter, idx) => {
+                filters.forEach((f, idx) => {
                     if (idx === 0) {
-                        ql += `nwr${filter}(${bboxString})->.t0;\n`;
+                        ql += `${f.feat}${f.filter}(${bboxString})->.t0;\n`;
                     } else {
-                        ql += `nwr${filter}(around.t${idx - 1}:${distance})->.t${idx};\n`;
+                        ql += `${f.feat}${f.filter}(around.t${idx - 1}:${distance})->.t${idx};\n`;
                     }
                 });
                 
@@ -197,22 +202,27 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
         ? COMMON_TAGS.filter(t => t.toLowerCase().includes(searchText.toLowerCase())) 
         : COMMON_TAGS;
         
-    const customTagMatch = searchText.includes("=") ? [searchText.trim()] : [];
-        
-    const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTagMatch, ...customTags]));
+    const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTags]));
 
     const formatTag = (tag: string) => {
         if (tag.includes("@@")) {
-            const [k, op, v] = tag.split("@@");
+            const parts = tag.split("@@");
+            let f = "nwr", k, op, v;
+            if (parts.length === 4) {
+                f = parts[0]; k = parts[1]; op = parts[2]; v = parts[3];
+            } else {
+                k = parts[0]; op = parts[1]; v = parts[2];
+            }
             const opLabel = op.replace(/_/g, " ");
-            return op === "is_null" || op === "is_not_null" ? `${k} ${opLabel}` : `${k} ${opLabel} ${v}`;
+            const prefix = f !== "nwr" ? `[${f}] ` : "";
+            return op === "is_null" || op === "is_not_null" ? `${prefix}${k} ${opLabel}` : `${prefix}${k} ${opLabel} ${v}`;
         }
         return tag.replace("=", ": ");
     };
 
     const handleAddAdvanced = () => {
         if (!advKey) return;
-        const tag = `${advKey}@@${advOp}@@${advVal}`;
+        const tag = `${advFeat}@@${advKey}@@${advOp}@@${advVal}`;
         if (!activeTags.includes(tag)) {
             setActiveTags(prev => [...prev, tag]);
         }
@@ -329,28 +339,13 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                                      borderRadius: "4px",
                                      fontSize: "13px"
                                  }}
-                                 placeholder="Filter, search OSM, or type key=value..." 
+                                 placeholder="Search common or dynamic OSM tags..." 
                                  value={searchText} 
                                  onChange={e => setSearchText(e.target.value)} 
-                                 onKeyDown={e => {
-                                     if (e.key === "Enter" && searchText.includes("=")) {
-                                         const tag = searchText.trim();
-                                         if (!activeTags.includes(tag)) {
-                                             setActiveTags(prev => [...prev, tag]);
-                                         }
-                                         if (!customTags.includes(tag)) {
-                                             setCustomTags(prev => [...prev, tag]);
-                                             try {
-                                                 (window as any).umami?.track("osm-search-custom-tag", { tag });
-                                             } catch {}
-                                         }
-                                         setSearchText("");
-                                     }
-                                 }}
                              />
                              <button
                                 onClick={() => setShowAdvanced(!showAdvanced)}
-                                title="Advanced Filters"
+                                title="Custom Feature Builder"
                                 style={{
                                     padding: "0 10px",
                                     backgroundColor: showAdvanced ? "var(--accent-blue)" : "rgba(0,0,0,0.3)",
@@ -379,17 +374,28 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                          </div>
                          
                          {showAdvanced && (
-                             <div style={{ display: "flex", gap: "4px", padding: "6px", background: "rgba(0,0,0,0.2)", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "8px", background: "rgba(0,0,0,0.2)", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                 <div style={{ width: "100%", fontSize: "11px", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "2px" }}>Custom Feature Builder</div>
+                                 <select 
+                                     value={advFeat} 
+                                     onChange={e => setAdvFeat(e.target.value)}
+                                     style={{ flex: 1, padding: "6px", fontSize: "12px", background: "rgba(0,0,0,0.4)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px", minWidth: "70px" }}
+                                 >
+                                     <option value="nwr">any</option>
+                                     <option value="node">node</option>
+                                     <option value="way">way</option>
+                                     <option value="relation">relation</option>
+                                 </select>
                                  <input 
-                                     placeholder="Key" 
+                                     placeholder="OSM key" 
                                      value={advKey} 
                                      onChange={e => setAdvKey(e.target.value)} 
-                                     style={{ flex: 1, padding: "4px 8px", fontSize: "12px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px" }}
+                                     style={{ flex: 1.5, padding: "6px 8px", fontSize: "12px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px", minWidth: "80px" }}
                                  />
                                  <select 
                                      value={advOp} 
                                      onChange={e => setAdvOp(e.target.value)}
-                                     style={{ width: "90px", padding: "4px", fontSize: "11px", background: "rgba(0,0,0,0.4)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px" }}
+                                     style={{ flex: 1, padding: "6px", fontSize: "12px", background: "rgba(0,0,0,0.4)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px", minWidth: "60px" }}
                                  >
                                      <optgroup label="Comparison">
                                          <option value="=">=</option>
@@ -400,27 +406,27 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                                          <option value="&lt;=">&lt;=</option>
                                      </optgroup>
                                      <optgroup label="String">
-                                         <option value="starts_with">Starts with</option>
-                                         <option value="ends_with">Ends with</option>
-                                         <option value="contains">Contains</option>
-                                         <option value="does_not_contain">Doesn't contain</option>
-                                         <option value="is_null">Is null</option>
-                                         <option value="is_not_null">Is not null</option>
+                                         <option value="starts_with">starts with</option>
+                                         <option value="ends_with">ends with</option>
+                                         <option value="contains">contains</option>
+                                         <option value="does_not_contain">doesn't contain</option>
+                                         <option value="is_null">is null</option>
+                                         <option value="is_not_null">is not null</option>
                                      </optgroup>
                                  </select>
                                  <input 
-                                     placeholder="Value" 
+                                     placeholder="OSM value" 
                                      value={advVal} 
                                      onChange={e => setAdvVal(e.target.value)} 
                                      disabled={advOp === 'is_null' || advOp === 'is_not_null'}
-                                     style={{ flex: 1, padding: "4px 8px", fontSize: "12px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px", opacity: (advOp === 'is_null' || advOp === 'is_not_null') ? 0.3 : 1 }}
+                                     style={{ flex: 1.5, padding: "6px 8px", fontSize: "12px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px", opacity: (advOp === 'is_null' || advOp === 'is_not_null') ? 0.3 : 1, minWidth: "80px" }}
                                  />
                                  <button 
                                      onClick={handleAddAdvanced}
                                      disabled={!advKey || ((advOp !== 'is_null' && advOp !== 'is_not_null') && !advVal)}
-                                     style={{ padding: "4px 8px", fontSize: "11px", background: "var(--accent-blue)", color: "#fff", border: "none", borderRadius: "2px", cursor: "pointer", fontWeight: "bold" }}
+                                     style={{ width: "100%", padding: "8px", fontSize: "12px", background: "var(--accent-blue)", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", marginTop: "2px", opacity: (!advKey || ((advOp !== 'is_null' && advOp !== 'is_not_null') && !advVal)) ? 0.5 : 1 }}
                                  >
-                                     ADD
+                                     ADD CUSTOM FEATURE
                                  </button>
                              </div>
                          )}
