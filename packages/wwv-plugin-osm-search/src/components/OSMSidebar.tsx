@@ -3,22 +3,9 @@ import { Math as CesiumMath } from "cesium";
 import { Eye, EyeOff } from "lucide-react";
 import { useOsmStore } from "../store";
 
-const COMMON_TAGS = [
-    // Military & Security
-    "military=base", "military=bunker", "amenity=police", "amenity=prison",
-    // Aviation & Maritime
-    "aeroway=aerodrome", "aeroway=helipad", "aeroway=hangar", "man_made=pier", "harbour=yes",
-    // Infrastructure & Utilities
-    "power=plant", "power=substation", "telecom=antenna", "man_made=communications_tower", "man_made=water_tower",
-    // Transport
-    "highway=bus_stop", "railway=station", "amenity=fuel", "amenity=parking",
-    // Medical & Emergency
-    "amenity=hospital", "amenity=fire_station", "amenity=clinic",
-    // General Commercial & Industrial
-    "shop=supermarket", "tourism=hotel", "industrial=factory", "landuse=industrial",
-    // Education & Amenities
-    "amenity=school", "amenity=university", "amenity=cafe", "building=house"
-];
+import { PRESETS } from "./OSMPresets";
+
+const COMMON_TAGS = PRESETS.map(p => `preset@@${p.name}`);
 
 interface OSMSidebarProps {
     plugin?: any; // OSMSearchPlugin
@@ -121,6 +108,42 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
         } else {
             // Bellingcat-style proximity search
             const filters = activeTags.map(tag => {
+                if (tag.startsWith("preset@@")) {
+                    const name = tag.split("@@")[1];
+                    const p = PRESETS.find(x => x.name === name);
+                    if (!p) return { feat: "nwr", filter: "" };
+                    
+                    const feat = p.type === 'point' ? 'node' : (p.type === 'line' ? 'way' : 'nwr');
+                    
+                    const createFilterStr = (f: any) => {
+                        let filter = "";
+                        const key = f.parameter;
+                        const val = f.value;
+                        const op = f.comparison;
+                        if (op === "=") filter = `["${key}"="${val}"]`;
+                        else if (op === "!=") filter = `["${key}"!="${val}"]`;
+                        else if (op === ">") filter = `["${key}"](if:number(t["${key}"]) > ${val})`;
+                        else if (op === "<") filter = `["${key}"](if:number(t["${key}"]) < ${val})`;
+                        else if (op === ">=") filter = `["${key}"](if:number(t["${key}"]) >= ${val})`;
+                        else if (op === "<=") filter = `["${key}"](if:number(t["${key}"]) <= ${val})`;
+                        else if (op === "starts with") filter = `["${key}"~"^${val}"]`;
+                        else if (op === "ends with") filter = `["${key}"~"${val}$"]`;
+                        else if (op === "contains") filter = `["${key}"~"${val}"]`;
+                        else if (op === "doesn't contain") filter = `["${key}"!~"${val}"]`;
+                        else if (op === "is null") filter = `[!"${key}"]`;
+                        else if (op === "is not null") filter = `["${key}"]`;
+                        return filter;
+                    };
+
+                    if (p.method === 'AND') {
+                        const filterStr = p.filters.map(createFilterStr).join("");
+                        return { preset: true, method: 'AND', feat, filter: filterStr };
+                    } else if (p.method === 'OR') {
+                        const filtersArr = p.filters.map(createFilterStr);
+                        return { preset: true, method: 'OR', feat, filters: filtersArr };
+                    }
+                }
+
                 let feat = "nwr", key, val, op = "=";
                 if (tag.includes("@@")) {
                     const parts = tag.split("@@");
@@ -149,21 +172,29 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                 else if (op === "does_not_contain") filter = `["${key}"!~"${val}"]`;
                 else if (op === "is_null") filter = `[!"${key}"]`;
                 else if (op === "is_not_null") filter = `["${key}"]`;
-                return { feat, filter };
+                return { preset: false, feat, filter };
             });
 
             if (activeTags.length === 1) {
-                ql = `[out:json][timeout:25];\n${filters[0].feat}${filters[0].filter}(${bboxString});\nout center;`;
+                const f = filters[0] as any;
+                if (f.preset && f.method === 'OR') {
+                    const lines = f.filters.map((sf: string) => `${f.feat}${sf}(${bboxString});`).join(" ");
+                    ql = `[out:json][timeout:25];\n( ${lines} );\nout center;`;
+                } else {
+                    ql = `[out:json][timeout:25];\n${f.feat}${f.filter}(${bboxString});\nout center;`;
+                }
             } else if (activeTags.length > 1) {
                 // Chain search: Find A, then find B near A, then find C near B...
                 // Using .t0, .t1, .t2 as set names
                 ql = `[out:json][timeout:25];\n`;
                 
-                filters.forEach((f, idx) => {
-                    if (idx === 0) {
-                        ql += `${f.feat}${f.filter}(${bboxString})->.t0;\n`;
+                filters.forEach((f: any, idx) => {
+                    const scope = idx === 0 ? bboxString : `around.t${idx - 1}:${distance}`;
+                    if (f.preset && f.method === 'OR') {
+                        const lines = f.filters.map((sf: string) => `${f.feat}${sf}(${scope});`).join(" ");
+                        ql += `( ${lines} )->.t${idx};\n`;
                     } else {
-                        ql += `${f.feat}${f.filter}(around.t${idx - 1}:${distance})->.t${idx};\n`;
+                        ql += `${f.feat}${f.filter}(${scope})->.t${idx};\n`;
                     }
                 });
                 
@@ -199,12 +230,15 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
 
     // Combine filtered common tags with newly fetched dynamic tags, removing duplicates
     const filteredCommon = searchText 
-        ? COMMON_TAGS.filter(t => t.toLowerCase().includes(searchText.toLowerCase())) 
+        ? COMMON_TAGS.filter(t => t.split("preset@@")[1].toLowerCase().includes(searchText.toLowerCase())) 
         : COMMON_TAGS;
         
     const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTags]));
 
     const formatTag = (tag: string) => {
+        if (tag.startsWith("preset@@")) {
+            return tag.split("@@")[1];
+        }
         if (tag.includes("@@")) {
             const parts = tag.split("@@");
             let f = "nwr", k, op, v;
