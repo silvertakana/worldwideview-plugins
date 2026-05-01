@@ -35,6 +35,10 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
     
     const [searchText, setSearchText] = useState("");
     const [customTags, setCustomTags] = useState<string[]>([]);
+    const [showAdvanced, setShowAdvanced] = useState(false);
+    const [advKey, setAdvKey] = useState("");
+    const [advOp, setAdvOp] = useState("=");
+    const [advVal, setAdvVal] = useState("");
 
     React.useEffect(() => {
         try {
@@ -115,22 +119,46 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
             ql = rawQuery.replace(/{{bbox}}/g, bboxString);
         } else {
             // Bellingcat-style proximity search
+            const filters = activeTags.map(tag => {
+                let key, val, op = "=";
+                if (tag.includes("@@")) {
+                    const parts = tag.split("@@");
+                    key = parts[0]; op = parts[1]; val = parts[2];
+                } else if (tag.includes("=")) {
+                    const parts = tag.split("=");
+                    key = parts[0]; val = parts.slice(1).join("=");
+                } else {
+                    key = tag; op = "is_not_null"; val = "";
+                }
+                
+                let filter = "";
+                if (op === "=") filter = `["${key}"="${val}"]`;
+                else if (op === "!=") filter = `["${key}"!="${val}"]`;
+                else if (op === ">") filter = `["${key}"](if:number(t["${key}"]) > ${val})`;
+                else if (op === "<") filter = `["${key}"](if:number(t["${key}"]) < ${val})`;
+                else if (op === ">=") filter = `["${key}"](if:number(t["${key}"]) >= ${val})`;
+                else if (op === "<=") filter = `["${key}"](if:number(t["${key}"]) <= ${val})`;
+                else if (op === "starts_with") filter = `["${key}"~"^${val}"]`;
+                else if (op === "ends_with") filter = `["${key}"~"${val}$"]`;
+                else if (op === "contains") filter = `["${key}"~"${val}"]`;
+                else if (op === "does_not_contain") filter = `["${key}"!~"${val}"]`;
+                else if (op === "is_null") filter = `[!"${key}"]`;
+                else if (op === "is_not_null") filter = `["${key}"]`;
+                return filter;
+            });
+
             if (activeTags.length === 1) {
-                const [key, val] = activeTags[0].split("=");
-                ql = `[out:json][timeout:25];
-nwr["${key}"="${val}"](${bboxString});
-out center;`;
+                ql = `[out:json][timeout:25];\nnwr${filters[0]}(${bboxString});\nout center;`;
             } else if (activeTags.length > 1) {
                 // Chain search: Find A, then find B near A, then find C near B...
                 // Using .t0, .t1, .t2 as set names
                 ql = `[out:json][timeout:25];\n`;
                 
-                activeTags.forEach((tag, idx) => {
-                    const [key, val] = tag.split("=");
+                filters.forEach((filter, idx) => {
                     if (idx === 0) {
-                        ql += `nwr["${key}"="${val}"](${bboxString})->.t0;\n`;
+                        ql += `nwr${filter}(${bboxString})->.t0;\n`;
                     } else {
-                        ql += `nwr["${key}"="${val}"](around.t${idx - 1}:${distance})->.t${idx};\n`;
+                        ql += `nwr${filter}(around.t${idx - 1}:${distance})->.t${idx};\n`;
                     }
                 });
                 
@@ -172,6 +200,31 @@ out center;`;
     const customTagMatch = searchText.includes("=") ? [searchText.trim()] : [];
         
     const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTagMatch, ...customTags]));
+
+    const formatTag = (tag: string) => {
+        if (tag.includes("@@")) {
+            const [k, op, v] = tag.split("@@");
+            const opLabel = op.replace(/_/g, " ");
+            return op === "is_null" || op === "is_not_null" ? `${k} ${opLabel}` : `${k} ${opLabel} ${v}`;
+        }
+        return tag.replace("=", ": ");
+    };
+
+    const handleAddAdvanced = () => {
+        if (!advKey) return;
+        const tag = `${advKey}@@${advOp}@@${advVal}`;
+        if (!activeTags.includes(tag)) {
+            setActiveTags(prev => [...prev, tag]);
+        }
+        if (!customTags.includes(tag)) {
+            setCustomTags(prev => [...prev, tag]);
+            try {
+                (window as any).umami?.track("osm-search-custom-tag", { tag });
+            } catch {}
+        }
+        setAdvKey("");
+        setAdvVal("");
+    };
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -263,48 +316,113 @@ out center;`;
                             />
                          </div>
                      )}
-                     <div style={{ position: "relative" }}>
-                         <input 
-                             style={{ 
-                                 width: "100%", 
-                                 padding: "8px", 
-                                 paddingRight: "24px",
-                                 backgroundColor: "rgba(0,0,0,0.3)", 
-                                 color: "#fff", 
-                                 border: "1px solid var(--border-subtle)",
-                                 borderRadius: "4px",
-                                 fontSize: "13px"
-                             }}
-                             placeholder="Filter, search OSM, or type key=value..." 
-                             value={searchText} 
-                             onChange={e => setSearchText(e.target.value)} 
-                             onKeyDown={e => {
-                                 if (e.key === "Enter" && searchText.includes("=")) {
-                                     const tag = searchText.trim();
-                                     if (!activeTags.includes(tag)) {
-                                         setActiveTags(prev => [...prev, tag]);
+                     <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "4px" }}>
+                         <div style={{ display: "flex", gap: "4px" }}>
+                             <input 
+                                 style={{ 
+                                     flex: 1,
+                                     padding: "8px", 
+                                     paddingRight: "24px",
+                                     backgroundColor: "rgba(0,0,0,0.3)", 
+                                     color: "#fff", 
+                                     border: "1px solid var(--border-subtle)",
+                                     borderRadius: "4px",
+                                     fontSize: "13px"
+                                 }}
+                                 placeholder="Filter, search OSM, or type key=value..." 
+                                 value={searchText} 
+                                 onChange={e => setSearchText(e.target.value)} 
+                                 onKeyDown={e => {
+                                     if (e.key === "Enter" && searchText.includes("=")) {
+                                         const tag = searchText.trim();
+                                         if (!activeTags.includes(tag)) {
+                                             setActiveTags(prev => [...prev, tag]);
+                                         }
+                                         if (!customTags.includes(tag)) {
+                                             setCustomTags(prev => [...prev, tag]);
+                                             try {
+                                                 (window as any).umami?.track("osm-search-custom-tag", { tag });
+                                             } catch {}
+                                         }
+                                         setSearchText("");
                                      }
-                                     if (!customTags.includes(tag)) {
-                                         setCustomTags(prev => [...prev, tag]);
-                                         try {
-                                             (window as any).umami?.track("osm-search-custom-tag", { tag });
-                                         } catch {}
-                                     }
-                                     setSearchText("");
-                                 }
-                             }}
-                         />
-                         {isSearchingApi && (
-                             <span style={{ 
-                                 position: "absolute", 
-                                 right: "8px", 
-                                 top: "50%", 
-                                 transform: "translateY(-50%)", 
-                                 fontSize: "10px", 
-                                 color: "var(--text-muted)" 
-                             }}>
-                                 ⏳
-                             </span>
+                                 }}
+                             />
+                             <button
+                                onClick={() => setShowAdvanced(!showAdvanced)}
+                                title="Advanced Filters"
+                                style={{
+                                    padding: "0 10px",
+                                    backgroundColor: showAdvanced ? "var(--accent-blue)" : "rgba(0,0,0,0.3)",
+                                    color: "#fff",
+                                    border: "1px solid var(--border-subtle)",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    fontSize: "12px",
+                                    display: "flex",
+                                    alignItems: "center"
+                                }}
+                             >
+                                 ⚡
+                             </button>
+                             {isSearchingApi && (
+                                 <span style={{ 
+                                     position: "absolute", 
+                                     right: "42px", 
+                                     top: "12px", 
+                                     fontSize: "10px", 
+                                     color: "var(--text-muted)" 
+                                 }}>
+                                     ⏳
+                                 </span>
+                             )}
+                         </div>
+                         
+                         {showAdvanced && (
+                             <div style={{ display: "flex", gap: "4px", padding: "6px", background: "rgba(0,0,0,0.2)", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                 <input 
+                                     placeholder="Key" 
+                                     value={advKey} 
+                                     onChange={e => setAdvKey(e.target.value)} 
+                                     style={{ flex: 1, padding: "4px 8px", fontSize: "12px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px" }}
+                                 />
+                                 <select 
+                                     value={advOp} 
+                                     onChange={e => setAdvOp(e.target.value)}
+                                     style={{ width: "90px", padding: "4px", fontSize: "11px", background: "rgba(0,0,0,0.4)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px" }}
+                                 >
+                                     <optgroup label="Comparison">
+                                         <option value="=">=</option>
+                                         <option value="!=">!=</option>
+                                         <option value="&gt;">&gt;</option>
+                                         <option value="&lt;">&lt;</option>
+                                         <option value="&gt;=">&gt;=</option>
+                                         <option value="&lt;=">&lt;=</option>
+                                     </optgroup>
+                                     <optgroup label="String">
+                                         <option value="starts_with">Starts with</option>
+                                         <option value="ends_with">Ends with</option>
+                                         <option value="contains">Contains</option>
+                                         <option value="does_not_contain">Doesn't contain</option>
+                                         <option value="is_null">Is null</option>
+                                         <option value="is_not_null">Is not null</option>
+                                     </optgroup>
+                                 </select>
+                                 <input 
+                                     placeholder="Value" 
+                                     value={advVal} 
+                                     onChange={e => setAdvVal(e.target.value)} 
+                                     disabled={advOp === 'is_null' || advOp === 'is_not_null'}
+                                     style={{ flex: 1, padding: "4px 8px", fontSize: "12px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-subtle)", color: "#fff", borderRadius: "2px", opacity: (advOp === 'is_null' || advOp === 'is_not_null') ? 0.3 : 1 }}
+                                 />
+                                 <button 
+                                     onClick={handleAddAdvanced}
+                                     disabled={!advKey || ((advOp !== 'is_null' && advOp !== 'is_not_null') && !advVal)}
+                                     style={{ padding: "4px 8px", fontSize: "11px", background: "var(--accent-blue)", color: "#fff", border: "none", borderRadius: "2px", cursor: "pointer", fontWeight: "bold" }}
+                                 >
+                                     ADD
+                                 </button>
+                             </div>
                          )}
                      </div>
 
@@ -324,7 +442,7 @@ out center;`;
                                          gap: "4px"
                                      }}
                                  >
-                                     {tag.replace("=", ": ")}
+                                     {formatTag(tag)}
                                      <span
                                          onClick={(e) => {
                                              e.stopPropagation();
@@ -369,7 +487,7 @@ out center;`;
                                     }}
                                     onClick={() => setActiveTags(prev => [...prev, tag])}
                                 >
-                                    {tag.replace("=", ": ")}
+                                    {formatTag(tag)}
                                     {customTags.includes(tag) && (
                                         <span
                                             onClick={(e) => {
