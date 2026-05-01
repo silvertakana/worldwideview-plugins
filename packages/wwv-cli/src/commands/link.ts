@@ -67,6 +67,25 @@ export function linkCommand(cwd: string, targetDir?: string) {
     fs.writeFileSync(path.join(finalDestDir, 'plugin.json'), JSON.stringify(manifest, null, 2));
     console.log(green(`✅ Proxy manifest injected to WWV instance: ${pluginId}`));
 
+    // --- NEW CODE: Sync with database ---
+    fetch('http://localhost:3000/api/plugins/dev-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ manifest })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            console.log(green(`✅ Database successfully synced to point to local files.`));
+        } else {
+            console.log(red(`⚠️ Warning: Database sync failed: ${data.error}`));
+        }
+    })
+    .catch(err => {
+        console.log(red(`⚠️ Warning: Could not reach dev server to sync DB. Is localhost:3000 running?`));
+    });
+    // --- END NEW CODE ---
+
     const sourceFile = path.join(cwd, 'dist', 'frontend.mjs');
     const destFile = path.join(finalDestDir, 'frontend.mjs');
 
