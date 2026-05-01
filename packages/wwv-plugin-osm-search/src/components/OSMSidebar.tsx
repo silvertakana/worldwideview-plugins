@@ -25,14 +25,16 @@ interface OSMSidebarProps {
 }
 
 export function OSMSidebar({ plugin }: OSMSidebarProps) {
-    const { bboxLocked, showBbox, setShowBbox, setBboxLocked, currentBbox, setLockedBbox, lockedBbox } = useOsmStore();
-    const [mode, setMode] = useState<"bellingcat" | "turbo">("bellingcat");
-    const [rawQuery, setRawQuery] = useState("[out:json];\nnode[amenity=cafe]({{bbox}});\nout center;");
+    const { 
+        bboxLocked, showBbox, setShowBbox, setBboxLocked, currentBbox, setLockedBbox, lockedBbox,
+        activeTags, setActiveTags,
+        mode, setMode,
+        rawQuery, setRawQuery,
+        distance, setDistance
+    } = useOsmStore();
     
     const [searchText, setSearchText] = useState("");
-    const [activeTags, setActiveTags] = useState<string[]>([]);
     const [customTags, setCustomTags] = useState<string[]>([]);
-    const [distance, setDistance] = useState(500);
 
     React.useEffect(() => {
         try {
