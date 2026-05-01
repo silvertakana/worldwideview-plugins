@@ -305,18 +305,59 @@ out center;`;
                              </span>
                          )}
                      </div>
+
+                     {activeTags.length > 0 && (
+                         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "4px 0" }}>
+                             {activeTags.map(tag => (
+                                 <div 
+                                     key={`active-${tag}`} 
+                                     style={{ 
+                                         background: "var(--accent-blue)", 
+                                         color: "#fff", 
+                                         padding: "4px 10px", 
+                                         borderRadius: "14px", 
+                                         fontSize: "11px",
+                                         display: "flex",
+                                         alignItems: "center",
+                                         gap: "4px"
+                                     }}
+                                 >
+                                     {tag.replace("=", ": ")}
+                                     <span
+                                         onClick={(e) => {
+                                             e.stopPropagation();
+                                             setActiveTags(prev => prev.filter(t => t !== tag));
+                                         }}
+                                         style={{
+                                             marginLeft: "2px",
+                                             padding: "0 4px",
+                                             borderRadius: "50%",
+                                             background: "rgba(255,255,255,0.15)",
+                                             display: "flex",
+                                             justifyContent: "center",
+                                             alignItems: "center",
+                                             cursor: "pointer"
+                                         }}
+                                         title="Remove from selection"
+                                     >
+                                         ×
+                                     </span>
+                                 </div>
+                             ))}
+                         </div>
+                     )}
+
                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxHeight: "150px", overflowY: "auto", padding: "4px" }}>
-                         {renderedTags.map(tag => {
-                             const isActive = activeTags.includes(tag);
+                         {renderedTags.filter(tag => !activeTags.includes(tag)).map(tag => {
                              return (
                                 <button 
                                     key={tag} 
                                     style={{ 
-                                        background: isActive ? "var(--accent-blue)" : "rgba(255,255,255,0.05)", 
-                                        color: isActive ? "#fff" : "var(--text-secondary)", 
+                                        background: "rgba(255,255,255,0.05)", 
+                                        color: "var(--text-secondary)", 
                                         padding: "4px 10px", 
                                         borderRadius: "14px", 
-                                        border: `1px solid ${isActive ? "transparent" : "rgba(255,255,255,0.1)"}`,
+                                        border: "1px solid rgba(255,255,255,0.1)",
                                         fontSize: "11px",
                                         cursor: "pointer",
                                         transition: "all 0.2s",
@@ -324,7 +365,7 @@ out center;`;
                                         alignItems: "center",
                                         gap: "4px"
                                     }}
-                                    onClick={() => setActiveTags(prev => prev.includes(tag) ? prev.filter(t=>t!==tag) : [...prev, tag])}
+                                    onClick={() => setActiveTags(prev => [...prev, tag])}
                                 >
                                     {tag.replace("=", ": ")}
                                     {customTags.includes(tag) && (
@@ -332,7 +373,6 @@ out center;`;
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setCustomTags(prev => prev.filter(t => t !== tag));
-                                                setActiveTags(prev => prev.filter(t => t !== tag));
                                             }}
                                             style={{
                                                 marginLeft: "2px",
@@ -343,6 +383,7 @@ out center;`;
                                                 justifyContent: "center",
                                                 alignItems: "center"
                                             }}
+                                            title="Delete custom tag permanently"
                                         >
                                             ×
                                         </span>
