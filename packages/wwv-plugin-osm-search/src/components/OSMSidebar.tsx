@@ -31,7 +31,19 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
     
     const [searchText, setSearchText] = useState("");
     const [activeTags, setActiveTags] = useState<string[]>([]);
+    const [customTags, setCustomTags] = useState<string[]>([]);
     const [distance, setDistance] = useState(500);
+
+    React.useEffect(() => {
+        try {
+            const saved = localStorage.getItem("wwv_osm_custom_tags");
+            if (saved) setCustomTags(JSON.parse(saved));
+        } catch {}
+    }, []);
+
+    React.useEffect(() => {
+        localStorage.setItem("wwv_osm_custom_tags", JSON.stringify(customTags));
+    }, [customTags]);
     const [isScanning, setIsScanning] = useState(false);
     
     // Taginfo dynamic search states
@@ -157,7 +169,7 @@ out center;`;
         
     const customTagMatch = searchText.includes("=") ? [searchText.trim()] : [];
         
-    const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTagMatch]));
+    const renderedTags = Array.from(new Set([...filteredCommon, ...dynamicTags, ...customTagMatch, ...customTags]));
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -270,6 +282,12 @@ out center;`;
                                      if (!activeTags.includes(tag)) {
                                          setActiveTags(prev => [...prev, tag]);
                                      }
+                                     if (!customTags.includes(tag)) {
+                                         setCustomTags(prev => [...prev, tag]);
+                                         try {
+                                             (window as any).umami?.track("osm-search-custom-tag", { tag });
+                                         } catch {}
+                                     }
                                      setSearchText("");
                                  }
                              }}
@@ -301,11 +319,34 @@ out center;`;
                                         border: `1px solid ${isActive ? "transparent" : "rgba(255,255,255,0.1)"}`,
                                         fontSize: "11px",
                                         cursor: "pointer",
-                                        transition: "all 0.2s"
+                                        transition: "all 0.2s",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "4px"
                                     }}
                                     onClick={() => setActiveTags(prev => prev.includes(tag) ? prev.filter(t=>t!==tag) : [...prev, tag])}
                                 >
                                     {tag.replace("=", ": ")}
+                                    {customTags.includes(tag) && (
+                                        <span
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setCustomTags(prev => prev.filter(t => t !== tag));
+                                                setActiveTags(prev => prev.filter(t => t !== tag));
+                                            }}
+                                            style={{
+                                                marginLeft: "2px",
+                                                padding: "0 4px",
+                                                borderRadius: "50%",
+                                                background: "rgba(255,255,255,0.15)",
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                            }}
+                                        >
+                                            ×
+                                        </span>
+                                    )}
                                 </button>
                              );
                          })}
