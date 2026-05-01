@@ -61,21 +61,20 @@ export function OSMBboxOverlay({ viewer, enabled }: { viewer: any; enabled: bool
 
     return (
         <CustomDataSource name="OSMSearchBBox">
-            <Entity>
-                <PolygonGraphics
-                    hierarchy={new PolygonHierarchy(positions)}
-                    fill={true}
-                    material={Color.RED.withAlpha(0.25)}
-                    classificationType={ClassificationType.BOTH}
-                    arcType={ArcType.GEODESIC}
-                    height={0}
-                />
+            <Entity
+                rectangle={{
+                    coordinates: activeBbox,
+                    fill: true,
+                    material: Color.RED.withAlpha(0.25),
+                    classificationType: ClassificationType.BOTH
+                }}
+            >
                 <PolylineGraphics
                     positions={positions}
                     width={3}
                     material={Color.RED}
                     clampToGround={true}
-                    arcType={ArcType.GEODESIC}
+                    arcType={ArcType.RHUMB}
                 />
             </Entity>
         </CustomDataSource>
