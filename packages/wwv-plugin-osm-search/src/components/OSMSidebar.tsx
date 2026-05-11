@@ -254,6 +254,32 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
         return tag.replace("=", ": ");
     };
 
+    const getTagTooltip = (tag: string) => {
+        if (tag.startsWith("preset@@")) {
+            const name = tag.split("@@")[1];
+            const p = PRESETS.find(x => x.name === name);
+            if (!p) return "Preset";
+            const filters = p.filters.map((f: any) => {
+                if (f.comparison === "is null" || f.comparison === "is_null") return `${f.parameter} is null`;
+                if (f.comparison === "is not null" || f.comparison === "is_not_null") return `${f.parameter} is not null`;
+                return `${f.parameter} ${f.comparison} "${f.value}"`;
+            }).join(` ${p.method} `);
+            return `Type: ${p.type}\nQuery: ${filters}`;
+        }
+        if (tag.includes("@@")) {
+            const parts = tag.split("@@");
+            let f = "nwr", k, op, v;
+            if (parts.length === 4) {
+                f = parts[0]; k = parts[1]; op = parts[2]; v = parts[3];
+            } else {
+                k = parts[0]; op = parts[1]; v = parts[2];
+            }
+            const opLabel = op.replace(/_/g, " ");
+            return `Type: ${f}\nQuery: ${k} ${opLabel}${v ? " \"" + v + "\"" : ""}`;
+        }
+        return `Type: any\nQuery: ${tag}`;
+    };
+
     const handleAddAdvanced = () => {
         if (!advKey) return;
         const tag = `${advFeat}@@${advKey}@@${advOp}@@${advVal}`;
@@ -471,6 +497,7 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                              {activeTags.map(tag => (
                                  <div 
                                      key={`active-${tag}`} 
+                                     title={getTagTooltip(tag)}
                                      style={{ 
                                          background: "var(--accent-blue)", 
                                          color: "#fff", 
@@ -512,6 +539,7 @@ export function OSMSidebar({ plugin }: OSMSidebarProps) {
                              return (
                                 <button 
                                     key={tag} 
+                                    title={getTagTooltip(tag)}
                                     style={{ 
                                         background: "rgba(255,255,255,0.05)", 
                                         color: "var(--text-secondary)", 
