@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
-import { Color, Cartesian3, Rectangle, PolygonHierarchy, ClassificationType, ArcType } from "cesium";
-import { Entity, PolygonGraphics, PolylineGraphics, CustomDataSource } from "resium";
+import { Color, Cartesian3, Rectangle, ArcType, ClassificationType } from "cesium";
+import { Entity, PolylineGraphics, CustomDataSource } from "resium";
 import { useOsmStore } from "../store";
 
 export function OSMBboxOverlay({ viewer, enabled }: { viewer: any; enabled: boolean }) {
@@ -22,14 +22,11 @@ export function OSMBboxOverlay({ viewer, enabled }: { viewer: any; enabled: bool
              }
         };
 
-        // Use 'changed' for continuous updates during movement
         viewer.camera.changed.addEventListener(updateBbox);
         viewer.camera.moveEnd.addEventListener(updateBbox);
         
-        // Initial attempt
         updateBbox();
 
-        // Temporary interval for 2 seconds to force updates while the globe/camera settles
         const initInterval = setInterval(updateBbox, 100);
         const timeout = setTimeout(() => clearInterval(initInterval), 2000);
         
@@ -56,26 +53,25 @@ export function OSMBboxOverlay({ viewer, enabled }: { viewer: any; enabled: bool
         ]);
     }, [activeBbox]);
 
-    // Don't render if layer is disabled OR if user has hidden the box
     if (!enabled || !activeBbox || !showBbox) return null;
 
     return (
         <CustomDataSource name="OSMSearchBBox">
-            <Entity>
-                <PolygonGraphics
-                    hierarchy={new PolygonHierarchy(positions)}
-                    fill={true}
-                    material={Color.RED.withAlpha(0.25)}
-                    classificationType={ClassificationType.BOTH}
-                    arcType={ArcType.GEODESIC}
-                    height={0}
-                />
+            <Entity
+                rectangle={{
+                    coordinates: activeBbox,
+                    fill: true,
+                    material: Color.RED.withAlpha(0.25),
+                    classificationType: ClassificationType.BOTH
+                }}
+            >
                 <PolylineGraphics
                     positions={positions}
                     width={3}
                     material={Color.RED}
+                    depthFailMaterial={Color.RED.withAlpha(0.7)}
                     clampToGround={true}
-                    arcType={ArcType.GEODESIC}
+                    arcType={ArcType.RHUMB}
                 />
             </Entity>
         </CustomDataSource>
